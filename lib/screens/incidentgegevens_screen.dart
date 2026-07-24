@@ -104,6 +104,36 @@ String tijdvak = "Pauze";
   },
 ),
 const SizedBox(height: 15),
+DropdownButtonFormField<String>(
+  value: incidentData.school.isEmpty
+      ? "De Horizon"
+      : incidentData.school,
+  decoration: const InputDecoration(
+    labelText: "School *",
+    border: OutlineInputBorder(),
+  ),
+  items: const [
+    DropdownMenuItem(
+      value: "De Horizon",
+      child: Text("De Horizon"),
+    ),
+    DropdownMenuItem(
+      value: "Het Kompas",
+      child: Text("Het Kompas"),
+    ),
+    DropdownMenuItem(
+      value: "De Brug",
+      child: Text("De Brug"),
+    ),
+  ],
+  onChanged: (value) {
+    setState(() {
+      incidentData.school = value!;
+    });
+  },
+),
+
+const SizedBox(height: 15),
             DropdownButtonFormField<String>(
               value: vestiging,
               decoration: const InputDecoration(
@@ -124,7 +154,6 @@ const SizedBox(height: 15),
             ),
 
             const SizedBox(height: 15),
-
             DropdownButtonFormField<String>(
               value: locatieDuiding,
               decoration: const InputDecoration(

@@ -160,6 +160,7 @@ const SizedBox(height: 20),
   locatie: incidentData.locatieDuiding,
   omschrijving: incidentData.omschrijving,
   incidentdatum: incidentData.incidentDatum,
+  school: incidentData.school,
 );
 for (final item in incidentData.betrokkenen) {
   final delen = item.split(' - ');

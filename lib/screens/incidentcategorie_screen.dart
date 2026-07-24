@@ -10,8 +10,8 @@ class IncidentCategorieScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const SafeCareAppBar(
-  titel: "Melding",
-),
+        titel: "Melding",
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
@@ -111,6 +111,7 @@ class IncidentCategorieScreen extends StatelessWidget {
                 );
               },
             ),
+
             ListTile(
               title: const Text(
                 "Giftigheid op de werkvloer",

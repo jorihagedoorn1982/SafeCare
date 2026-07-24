@@ -10,18 +10,20 @@ class SupabaseService {
   required String locatie,
   required String omschrijving,
   required String incidentdatum,
+  required String school,
   }) async {
     final result = await supabase
         .from('incidenten')
         .insert({
-          'categorie': categorie,
-          'subcategorie': subcategorie,
-          'casustype': casustype,
-          'locatie': locatie,
-          'omschrijving': omschrijving,
-          'status': 'Open',
-          'meldingsdatum': DateTime.now().toIso8601String(),
-        })
+  'categorie': categorie,
+  'subcategorie': subcategorie,
+  'casustype': casustype,
+  'locatie': locatie,
+  'omschrijving': omschrijving,
+  'school': school,
+  'status': 'Open',
+  'meldingsdatum': DateTime.now().toIso8601String(),
+})
         .select()
         .single();
 

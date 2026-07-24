@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 class SafeCareAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String titel;
+  final List<Widget>? actions;
 
   const SafeCareAppBar({
     super.key,
     required this.titel,
+    this.actions,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-  toolbarHeight: 80,
-  centerTitle: true,
+      toolbarHeight: 80,
+      centerTitle: true,
+      actions: actions,
 
   iconTheme: const IconThemeData(
     color: Colors.white,

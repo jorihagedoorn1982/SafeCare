@@ -18,7 +18,6 @@ String incidentDatum = "";
   // Melding
   String hoofdCategorie = "";
   List<String> categorieen = [];
-  String school = "";
 
   // Afhandeling
   List<String> netwerkpartners = [];

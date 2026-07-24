@@ -17,7 +17,7 @@ class WelcomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/images/SCI_mark.png',
+                  'assets/images/SCI-logo_SCI stack logo zeeblauw.png',
                   height: 260,
                 ),
 
