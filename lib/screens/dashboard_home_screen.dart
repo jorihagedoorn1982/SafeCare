@@ -27,10 +27,14 @@ class _DashboardHomeScreenState
   String piekMaand = "Geen data";
   List<MapEntry<String, int>> topScholen = [];
   List<MapEntry<String, int>> topLocaties = [];
+  List<MapEntry<String, int>> openDossiersPerSchool = [];
 
   Map<String, int> meldingenPerMaand = {};
   Map<String, int> locaties = {};
+  Map<String, int> openPerSchool = {};
+  Map<String, Map<String, int>> categoriePerSchool = {};
   Map<String, int> scholen = {};
+  Map<String, String> topCategoriePerSchool = {};
 
   @override
   void initState() {
@@ -65,60 +69,80 @@ class _DashboardHomeScreenState
 
     Map<String, int> perMaand = {};
 
-    for (final incident in incidenten) {
-  print(incident);
-      final categorie =
-          incident['categorie']?.toString() ?? '';
-final school =
-    incident['school']?.toString() ?? '';
-    final locatie =
-    incident['locatie']?.toString() ?? '';
-    if (locatie.isNotEmpty) {
-  locaties[locatie] =
-      (locaties[locatie] ?? 0) + 1;
-}
+for (final incident in incidenten) {
+  final categorie =
+      incident['categorie']?.toString() ?? '';
 
-if (school.isNotEmpty) {
-  scholen[school] =
-      (scholen[school] ?? 0) + 1;
-}
-      final status =
-          incident['status']?.toString() ?? '';
+  final school =
+      incident['school']?.toString() ?? '';
 
-      final meldingsdatum =
-          incident['meldingsdatum'];
+  final locatie =
+      incident['locatie']?.toString() ?? '';
 
-      if (status != 'Afgerond') {
-        open++;
-      }
+  if (school.isNotEmpty &&
+      categorie.isNotEmpty) {
+    categoriePerSchool.putIfAbsent(
+      school,
+      () => {},
+    );
 
-      if (meldingsdatum != null) {
-        final datum =
-            DateTime.parse(meldingsdatum);
+    categoriePerSchool[school]![categorie] =
+        (categoriePerSchool[school]![categorie] ?? 0) + 1;
+  }
 
-        final nu = DateTime.now();
+  if (locatie.isNotEmpty) {
+    locaties[locatie] =
+        (locaties[locatie] ?? 0) + 1;
+  }
 
-        if (datum.year == nu.year &&
-            datum.month == nu.month) {
-          dezeMaand++;
-        }
+  if (school.isNotEmpty) {
+    scholen[school] =
+        (scholen[school] ?? 0) + 1;
+  }
 
-        final maand =
-            "${datum.month}-${datum.year}";
+  final status =
+      incident['status']?.toString() ?? '';
 
-        perMaand[maand] =
-            (perMaand[maand] ?? 0) + 1;
-      }
+  final meldingsdatum =
+      incident['meldingsdatum'];
 
-      if (categorie == 'Agressie') agressie++;
-      if (categorie == 'Zorg & Veiligheid') zorg++;
-      if (categorie == 'Digitale Veiligheid') digitaal++;
-      if (categorie ==
-          'Overlast & Strafbaar Gedrag') {
-        overlast++;
-      }
+  if (status != 'Afgerond') {
+    open++;
+  }
+
+  if (status != 'Afgerond' &&
+      school.isNotEmpty) {
+    openPerSchool[school] =
+        (openPerSchool[school] ?? 0) + 1;
+  }
+
+  if (meldingsdatum != null) {
+    final datum =
+        DateTime.parse(meldingsdatum);
+
+    final nu = DateTime.now();
+
+    if (datum.year == nu.year &&
+        datum.month == nu.month) {
+      dezeMaand++;
     }
 
+    final maand =
+        "${datum.month}-${datum.year}";
+
+    perMaand[maand] =
+        (perMaand[maand] ?? 0) + 1;
+  }
+
+  if (categorie == 'Agressie') agressie++;
+  if (categorie == 'Zorg & Veiligheid') zorg++;
+  if (categorie == 'Digitale Veiligheid') digitaal++;
+
+  if (categorie ==
+      'Overlast & Strafbaar Gedrag') {
+    overlast++;
+  }
+}
     for (final persoon in betrokkenen) {
   final niveau =
       persoon['onderwijsniveau']?.toString() ?? '';
@@ -186,6 +210,32 @@ if (perMaand.length >= 2) {
         "${verschil.toStringAsFixed(0)}%";
   }
 }
+final openPerSchoolGesorteerd =
+    openPerSchool.entries.toList()
+      ..sort(
+        (a, b) =>
+            b.value.compareTo(a.value),
+      );
+      Map<String, String> hoogsteCategoriePerSchool = {};
+
+categoriePerSchool.forEach(
+  (school, categorieen) {
+    String topCategorieSchool = "-";
+    int hoogsteAantal = 0;
+
+    categorieen.forEach(
+      (categorie, aantal) {
+        if (aantal > hoogsteAantal) {
+          hoogsteAantal = aantal;
+          topCategorieSchool = categorie;
+        }
+      },
+    );
+
+    hoogsteCategoriePerSchool[school] =
+        topCategorieSchool;
+  },
+);
 final scholenGesorteerd =
     scholen.entries.toList()
       ..sort(
@@ -215,6 +265,10 @@ final scholenGesorteerd =
       meldingenPerMaand = perMaand;
 topScholen = scholenGesorteerd;
 topLocaties = locatiesGesorteerd;
+openDossiersPerSchool =
+    openPerSchoolGesorteerd;
+    topCategoriePerSchool =
+    hoogsteCategoriePerSchool;
 
       print("Scholen:");
 print(scholen);
@@ -268,7 +322,8 @@ print(scholenGesorteerd);
                     shrinkWrap: true,
                     physics:
                         const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 4,
+                    crossAxisCount: 3,
+                    childAspectRatio: 1.8,
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 15,
                     children: [
@@ -401,6 +456,29 @@ const SizedBox(height: 10),
       title: Text(locatie.key),
       trailing: Text(
         "${locatie.value} meldingen",
+      ),
+    ),
+  ),
+),
+const SizedBox(height: 30),
+
+const Text(
+  "🚨 Open dossiers per school",
+  style: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+const SizedBox(height: 10),
+
+...openDossiersPerSchool.take(5).map(
+  (school) => Card(
+    child: ListTile(
+      leading: const Icon(Icons.warning),
+      title: Text(school.key),
+      trailing: Text(
+        "${school.value} open",
       ),
     ),
   ),
