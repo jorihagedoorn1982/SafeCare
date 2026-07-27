@@ -19,8 +19,6 @@ class _DashboardHomeScreenState
   String gebruikerEmail = "";
   String gebruikerNaam = "";
   String gebruikerRol = "";
-  String? gebruikerBestuurId;
-String? gebruikerSchoolId;
 
   int totaalMeldingen = 0;
   int openDossiers = 0;
@@ -52,7 +50,7 @@ void initState() {
       Supabase.instance.client.auth.currentUser?.email ?? "";
 
   laadProfiel();
-
+  laadDashboard();
 }
 Future<void> laadProfiel() async {
   try {
@@ -75,19 +73,12 @@ Future<void> laadProfiel() async {
     final profiel = resultaat.first;
 
     setState(() {
-  gebruikerNaam =
-      profiel['naam']?.toString() ?? '';
+      gebruikerNaam =
+          profiel['naam']?.toString() ?? '';
 
-  gebruikerRol =
-      profiel['rol']?.toString() ?? '';
-
-  gebruikerBestuurId =
-      profiel['bestuur_id']?.toString();
-
-  gebruikerSchoolId =
-      profiel['school_id']?.toString();
-});
-await laadDashboard();
+      gebruikerRol =
+          profiel['rol']?.toString() ?? '';
+    });
 
     print("Profiel geladen:");
     print(profiel);
@@ -99,10 +90,8 @@ await laadDashboard();
   Future<void> laadDashboard() async {
     final supabase = Supabase.instance.client;
 
-   final incidenten =
-    await supabase
-        .from('incidenten')
-        .select();
+    final incidenten =
+        await supabase.from('incidenten').select();
 
     final betrokkenen =
         await supabase.from('betrokkenen').select();
@@ -606,33 +595,34 @@ const SizedBox(height: 10),
       ),
     );
   }
+
   Widget _kaart(String titel, String waarde) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Text(
-                waarde,
-                textAlign: TextAlign.center,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+  return Card(
+    child: Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            child: Text(
+              waarde,
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 6),
-            Text(
-              titel,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            titel,
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

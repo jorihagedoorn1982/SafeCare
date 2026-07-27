@@ -250,10 +250,10 @@ print(scholenGesorteerd);
               child: ListView(
                 children: [
                   GridView.count(
-                    shrinkWrap: true,
-                    physics:
-                        const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 4,
+  shrinkWrap: true,
+  physics: const NeverScrollableScrollPhysics(),
+  crossAxisCount: 3,
+  childAspectRatio: 0.9,
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 15,
                     children: [
@@ -277,10 +277,33 @@ print(scholenGesorteerd);
                         "MBO",
                         mboAantal.toString(),
                       ),
-                      _kaart(
-                        "Top categorie",
-                        topCategorie,
-                      ),
+                      Card(
+  child: Padding(
+    padding: const EdgeInsets.all(12),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Center(
+            child: Text(
+              topCategorie,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          "Top categorie",
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  ),
+),
                       _kaart(
   "Piekmaand",
   piekMaand,
@@ -329,7 +352,7 @@ _kaart(
         children: [
           Container(
             height: 20,
-            width: entry.value * 20,
+            width: entry.value.toDouble(),
             color: Colors.blue,
           ),
 
@@ -355,22 +378,37 @@ _kaart(
   }
 
   Widget _kaart(String titel, String waarde) {
-    return Card(
+  return Card(
+    child: Padding(
+      padding: const EdgeInsets.all(12),
       child: Column(
-        mainAxisAlignment:
-            MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            waarde,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Center(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  waarde,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 10),
-          Text(titel),
+
+          const SizedBox(height: 8),
+
+          Text(
+            titel,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+          ),
         ],
       ),
-    );
-  }
+    ),
+  );
 }

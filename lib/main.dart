@@ -4,11 +4,18 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'screens/welcome_screen.dart';
 
 class IncidentData {
+  // Algemeen
   String casusType = "";
-String incidentDatum = "";
+  String incidentDatum = "";
+
+  // Betrokkenen
   List<String> betrokkenen = [];
 
   // Incidentgegevens
+  String school = "";
+  String schoolId = "";
+  String bestuurId = "";
+
   String vestiging = "";
   String tijdvak = "";
   String locatieDuiding = "";
@@ -18,7 +25,6 @@ String incidentDatum = "";
   // Melding
   String hoofdCategorie = "";
   List<String> categorieen = [];
-  String school = "";
 
   // Afhandeling
   List<String> netwerkpartners = [];

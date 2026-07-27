@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../widgets/safecare_appbar.dart';
-import 'besturen_screen.dart';
-import 'scholen_screen.dart';
-import 'gebruikers_screen.dart';
 
 class DashboardHomeScreen extends StatefulWidget {
   const DashboardHomeScreen({super.key});
@@ -15,12 +12,7 @@ class DashboardHomeScreen extends StatefulWidget {
 
 class _DashboardHomeScreenState
     extends State<DashboardHomeScreen> {
-
   String gebruikerEmail = "";
-  String gebruikerNaam = "";
-  String gebruikerRol = "";
-  String? gebruikerBestuurId;
-String? gebruikerSchoolId;
 
   int totaalMeldingen = 0;
   int openDossiers = 0;
@@ -45,64 +37,20 @@ String? gebruikerSchoolId;
   Map<String, String> topCategoriePerSchool = {};
 
   @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
 
-  gebruikerEmail =
-      Supabase.instance.client.auth.currentUser?.email ?? "";
+    gebruikerEmail =
+        Supabase.instance.client.auth.currentUser?.email ?? "";
 
-  laadProfiel();
-
-}
-Future<void> laadProfiel() async {
-  try {
-    final user =
-        Supabase.instance.client.auth.currentUser;
-
-    if (user == null) return;
-
-    final resultaat =
-        await Supabase.instance.client
-            .from('profielen')
-            .select()
-            .eq('id', user.id);
-
-    if (resultaat.isEmpty) {
-      print("Geen profiel gevonden");
-      return;
-    }
-
-    final profiel = resultaat.first;
-
-    setState(() {
-  gebruikerNaam =
-      profiel['naam']?.toString() ?? '';
-
-  gebruikerRol =
-      profiel['rol']?.toString() ?? '';
-
-  gebruikerBestuurId =
-      profiel['bestuur_id']?.toString();
-
-  gebruikerSchoolId =
-      profiel['school_id']?.toString();
-});
-await laadDashboard();
-
-    print("Profiel geladen:");
-    print(profiel);
-  } catch (e) {
-    print("Fout bij laden profiel:");
-    print(e);
+    laadDashboard();
   }
-}
+
   Future<void> laadDashboard() async {
     final supabase = Supabase.instance.client;
 
-   final incidenten =
-    await supabase
-        .from('incidenten')
-        .select();
+    final incidenten =
+        await supabase.from('incidenten').select();
 
     final betrokkenen =
         await supabase.from('betrokkenen').select();
@@ -357,79 +305,15 @@ print(scholenGesorteerd);
           crossAxisAlignment:
               CrossAxisAlignment.start,
           children: [
-            Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Text(
-      gebruikerNaam,
-      style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    Text(
-      gebruikerRol,
-      style: const TextStyle(
-        fontSize: 14,
-        color: Colors.grey,
-      ),
-    ),
-    Text(
-      gebruikerEmail,
-      style: const TextStyle(
-        fontSize: 14,
-      ),
-    ),
-  ],
-),
+            Text(
+              "Ingelogd als: $gebruikerEmail",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
 
             const SizedBox(height: 20),
-
-            if (gebruikerRol == 'admin')
-  Wrap(
-    spacing: 10,
-    runSpacing: 10,
-    children: [
-      ElevatedButton.icon(
-        onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const BesturenScreen(),
-    ),
-  );
-},
-        icon: const Icon(Icons.account_balance),
-        label: const Text('Besturen'),
-      ),
-      ElevatedButton.icon(
-        onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const ScholenScreen(),
-    ),
-  );
-},
-        icon: const Icon(Icons.school),
-        label: const Text('Scholen'),
-      ),
-      ElevatedButton.icon(
-        onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) =>
-          const GebruikersScreen(),
-    ),
-  );
-},
-        icon: const Icon(Icons.people),
-        label: const Text('Gebruikers'),
-      ),
-    ],
-  ),
-  const SizedBox(height: 20),
 
             Expanded(
               child: ListView(
@@ -511,20 +395,21 @@ _kaart(
 
       const SizedBox(height: 5),
 
-     Row(
-  children: [
-    Expanded(
-      child: Container(
-        height: 20,
-        color: Colors.blue,
+      Row(
+        children: [
+          Container(
+            height: 20,
+            width: entry.value * 20,
+            color: Colors.blue,
+          ),
+
+          const SizedBox(width: 10),
+
+          Text(
+            "${entry.value} meldingen",
+          ),
+        ],
       ),
-    ),
-    const SizedBox(width: 10),
-    Text(
-      "${entry.value} meldingen",
-    ),
-  ],
-),
 
       const SizedBox(height: 15),
     ],
@@ -606,32 +491,23 @@ const SizedBox(height: 10),
       ),
     );
   }
+
   Widget _kaart(String titel, String waarde) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Text(
-                waarde,
-                textAlign: TextAlign.center,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+      child: Column(
+        mainAxisAlignment:
+            MainAxisAlignment.center,
+        children: [
+          Text(
+            waarde,
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 6),
-            Text(
-              titel,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 10),
+          Text(titel),
+        ],
       ),
     );
   }

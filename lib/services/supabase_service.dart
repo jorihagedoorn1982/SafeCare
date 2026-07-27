@@ -11,24 +11,29 @@ class SupabaseService {
   required String omschrijving,
   required String incidentdatum,
   required String school,
-  }) async {
-    final result = await supabase
-        .from('incidenten')
-        .insert({
-  'categorie': categorie,
-  'subcategorie': subcategorie,
-  'casustype': casustype,
-  'locatie': locatie,
-  'omschrijving': omschrijving,
-  'school': school,
-  'status': 'Open',
-  'meldingsdatum': DateTime.now().toIso8601String(),
-})
-        .select()
-        .single();
+  String? schoolId,
+  String? bestuurId,
+}) async {
+  final result = await supabase
+      .from('incidenten')
+      .insert({
+    'categorie': categorie,
+    'subcategorie': subcategorie,
+    'casustype': casustype,
+    'locatie': locatie,
+    'omschrijving': omschrijving,
+    'school': school,
+    'school_id': schoolId,
+    'bestuur_id': bestuurId,
+    'status': 'Open',
+    'meldingsdatum':
+        DateTime.now().toIso8601String(),
+  })
+      .select()
+      .single();
 
-    return result['id'];
-  }
+  return result['id'];
+}
 
   Future<void> saveBetrokkene({
   required int incidentId,

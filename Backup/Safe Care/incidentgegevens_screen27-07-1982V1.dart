@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../main.dart';
-import '../widgets/safecare_appbar.dart';
 import 'netwerkpartners_screen.dart';
+import '../widgets/safecare_appbar.dart';
 
 class IncidentGegevensScreen extends StatefulWidget {
   const IncidentGegevensScreen({super.key});
@@ -15,33 +13,17 @@ class IncidentGegevensScreen extends StatefulWidget {
 
 class _IncidentGegevensScreenState
     extends State<IncidentGegevensScreen> {
-  final TextEditingController omschrijvingController =
+  final TextEditingController klasController =
       TextEditingController();
 
-  DateTime? geselecteerdeDatum;
+  final TextEditingController omschrijvingController =
+    TextEditingController();
 
-  String vestiging = "Hoofdlocatie";
-  String locatieDuiding = "Aula";
-  String tijdvak = "Pauze";
+DateTime? geselecteerdeDatum;
 
-  List<dynamic> scholen = [];
-  String? geselecteerdeSchoolId;
-
-  @override
-  void initState() {
-    super.initState();
-    laadScholen();
-  }
-
-  Future<void> laadScholen() async {
-    final resultaat = await Supabase.instance.client
-        .from('scholen')
-        .select();
-
-    setState(() {
-      scholen = resultaat;
-    });
-  }
+String vestiging = "Hoofdlocatie";
+String locatieDuiding = "Aula";
+String tijdvak = "Pauze";
 
   final List<String> vestigingen = [
     "Hoofdlocatie",
@@ -91,77 +73,67 @@ class _IncidentGegevensScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const SafeCareAppBar(
-        titel: "Incidentgegevens",
-      ),
+  titel: "Incidentgegevens",
+),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
             TextFormField(
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: "Datum incident *",
-                border: const OutlineInputBorder(),
-                hintText: geselecteerdeDatum == null
-                    ? "Selecteer datum"
-                    : "${geselecteerdeDatum!.day}-${geselecteerdeDatum!.month}-${geselecteerdeDatum!.year}",
-              ),
-              onTap: () async {
-                final datum = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2020),
-                  lastDate: DateTime.now(),
-                );
+  readOnly: true,
+  decoration: InputDecoration(
+    labelText: "Datum incident *",
+    border: const OutlineInputBorder(),
+    hintText: geselecteerdeDatum == null
+        ? "Selecteer datum"
+        : "${geselecteerdeDatum!.day}-${geselecteerdeDatum!.month}-${geselecteerdeDatum!.year}",
+  ),
+  onTap: () async {
+    final datum = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+    );
 
-                if (datum != null) {
-                  setState(() {
-                    geselecteerdeDatum = datum;
-                  });
-                }
-              },
-            ),
+    if (datum != null) {
+      setState(() {
+        geselecteerdeDatum = datum;
+      });
+    }
+  },
+),
+const SizedBox(height: 15),
+DropdownButtonFormField<String>(
+  value: incidentData.school.isEmpty
+      ? "De Horizon"
+      : incidentData.school,
+  decoration: const InputDecoration(
+    labelText: "School *",
+    border: OutlineInputBorder(),
+  ),
+  items: const [
+    DropdownMenuItem(
+      value: "De Horizon",
+      child: Text("De Horizon"),
+    ),
+    DropdownMenuItem(
+      value: "Het Kompas",
+      child: Text("Het Kompas"),
+    ),
+    DropdownMenuItem(
+      value: "De Brug",
+      child: Text("De Brug"),
+    ),
+  ],
+  onChanged: (value) {
+    setState(() {
+      incidentData.school = value!;
+    });
+  },
+),
 
-            const SizedBox(height: 15),
-
-            DropdownButtonFormField<String>(
-              value: geselecteerdeSchoolId,
-              decoration: const InputDecoration(
-                labelText: "School *",
-                border: OutlineInputBorder(),
-              ),
-              items: scholen.map((school) {
-                return DropdownMenuItem<String>(
-                  value: school['id'].toString(),
-                  child: Text(
-                    school['naam'].toString(),
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  geselecteerdeSchoolId = value;
-
-                  final school = scholen.firstWhere(
-                    (s) =>
-                        s['id'].toString() == value,
-                  );
-
-                  incidentData.school =
-                      school['naam'].toString();
-
-                  incidentData.schoolId =
-                      school['id'].toString();
-
-                  incidentData.bestuurId =
-                      school['bestuur_id']
-                          .toString();
-                });
-              },
-            ),
-
-            const SizedBox(height: 15),
-
+const SizedBox(height: 15),
             DropdownButtonFormField<String>(
               value: vestiging,
               decoration: const InputDecoration(
@@ -169,7 +141,7 @@ class _IncidentGegevensScreenState
                 border: OutlineInputBorder(),
               ),
               items: vestigingen.map((item) {
-                return DropdownMenuItem<String>(
+                return DropdownMenuItem(
                   value: item,
                   child: Text(item),
                 );
@@ -182,7 +154,6 @@ class _IncidentGegevensScreenState
             ),
 
             const SizedBox(height: 15),
-
             DropdownButtonFormField<String>(
               value: locatieDuiding,
               decoration: const InputDecoration(
@@ -190,7 +161,7 @@ class _IncidentGegevensScreenState
                 border: OutlineInputBorder(),
               ),
               items: locaties.map((item) {
-                return DropdownMenuItem<String>(
+                return DropdownMenuItem(
                   value: item,
                   child: Text(item),
                 );
@@ -211,7 +182,7 @@ class _IncidentGegevensScreenState
                 border: OutlineInputBorder(),
               ),
               items: tijdvakken.map((item) {
-                return DropdownMenuItem<String>(
+                return DropdownMenuItem(
                   value: item,
                   child: Text(item),
                 );
@@ -239,34 +210,24 @@ class _IncidentGegevensScreenState
             ElevatedButton(
               onPressed: () {
                 if (geselecteerdeDatum == null) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Selecteer eerst een incidentdatum',
-                      ),
-                    ),
-                  );
-                  return;
-                }
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text(
+        'Selecteer eerst een incidentdatum',
+      ),
+    ),
+  );
+  return;
+}
+incidentData.incidentDatum =
+    geselecteerdeDatum!
+        .toIso8601String();
 
-                if (geselecteerdeSchoolId == null) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Selecteer een school',
-                      ),
-                    ),
-                  );
-                  return;
-                }
-
-                incidentData.incidentDatum =
-                    "${geselecteerdeDatum!.day.toString().padLeft(2, '0')}-"
-                    "${geselecteerdeDatum!.month.toString().padLeft(2, '0')}-"
-                    "${geselecteerdeDatum!.year}";
-
+incidentData.incidentDatum =
+    "${geselecteerdeDatum!.day.toString().padLeft(2, '0')}-"
+    "${geselecteerdeDatum!.month.toString().padLeft(2, '0')}-"
+    "${geselecteerdeDatum!.year}";
+    
                 incidentData.vestiging =
                     vestiging;
 
