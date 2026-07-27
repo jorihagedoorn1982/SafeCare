@@ -380,6 +380,13 @@ print(scholenGesorteerd);
         fontSize: 14,
       ),
     ),
+    Text(
+  "Bestuur: ${gebruikerBestuurId ?? '-'}",
+),
+
+Text(
+  "School: ${gebruikerSchoolId ?? '-'}",
+),
   ],
 ),
 

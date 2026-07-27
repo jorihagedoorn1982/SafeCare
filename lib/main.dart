@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/incidentcategorie_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'screens/welcome_screen.dart';
+import 'screens/auth_gate.dart';
 
 class IncidentData {
   // Algemeen
