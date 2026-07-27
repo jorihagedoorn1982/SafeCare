@@ -99,10 +99,23 @@ await laadDashboard();
   Future<void> laadDashboard() async {
     final supabase = Supabase.instance.client;
 
-   final incidenten =
-    await supabase
-        .from('incidenten')
-        .select();
+   dynamic incidenten;
+
+if (gebruikerRol == 'directeur') {
+  incidenten =
+      await supabase
+          .from('incidenten')
+          .select()
+          .eq(
+            'school_id',
+            gebruikerSchoolId!,
+          );
+} else {
+  incidenten =
+      await supabase
+          .from('incidenten')
+          .select();
+}
 
     final betrokkenen =
         await supabase.from('betrokkenen').select();
