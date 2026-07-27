@@ -119,6 +119,14 @@ if (gebruikerRol == 'directeur') {
             'bestuur_id',
             gebruikerBestuurId!,
           );
+          print("ROL:");
+print(gebruikerRol);
+
+print("BESTUUR ID:");
+print(gebruikerBestuurId);
+
+print("INCIDENTEN:");
+print(incidenten.length);
 } else {
   incidenten =
       await supabase
