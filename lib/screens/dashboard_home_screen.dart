@@ -110,6 +110,15 @@ if (gebruikerRol == 'directeur') {
             'school_id',
             gebruikerSchoolId!,
           );
+} else if (gebruikerRol == 'bestuurder') {
+  incidenten =
+      await supabase
+          .from('incidenten')
+          .select()
+          .eq(
+            'bestuur_id',
+            gebruikerBestuurId!,
+          );
 } else {
   incidenten =
       await supabase
@@ -393,13 +402,6 @@ print(scholenGesorteerd);
         fontSize: 14,
       ),
     ),
-    Text(
-  "Bestuur: ${gebruikerBestuurId ?? '-'}",
-),
-
-Text(
-  "School: ${gebruikerSchoolId ?? '-'}",
-),
   ],
 ),
 
