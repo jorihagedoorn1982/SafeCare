@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class DirecteurDashboardV2 extends StatefulWidget {
   const DirecteurDashboardV2({super.key});
@@ -193,8 +194,46 @@ class _DirecteurDashboardV2State
               ),
               const SizedBox(height: 30),
 
+Card(
+  child: Padding(
+    padding: const EdgeInsets.all(20),
+    child: Column(
+      children: const [
+        ListTile(
+          leading: Icon(Icons.calendar_month),
+          title: Text('April'),
+          subtitle: Text('2026'),
+          trailing: Text('14'),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.calendar_month),
+          title: Text('Mei'),
+          subtitle: Text('2026'),
+          trailing: Text('15'),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.calendar_month),
+          title: Text('Juni'),
+          subtitle: Text('2026'),
+          trailing: Text('10'),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.calendar_month),
+          title: Text('Juli'),
+          subtitle: Text('2026'),
+          trailing: Text('8'),
+        ),
+      ],
+    ),
+  ),
+),
+const SizedBox(height: 30),
+
 const Text(
-  '📈 Meldingen per maand',
+  '📍 Top 5 hotspots',
   style: TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
@@ -209,36 +248,39 @@ Card(
     child: Column(
       children: const [
         ListTile(
-  leading: Icon(Icons.calendar_month),
-  title: Text('April'),
-  subtitle: Text('2026'),
-  trailing: Text('14'),
-),
-Divider(),
-ListTile(
-  leading: Icon(Icons.calendar_month),
-  title: Text('Mei'),
-  subtitle: Text('2026'),
-  trailing: Text('15'),
-),
-Divider(),
-ListTile(
-  leading: Icon(Icons.calendar_month),
-  title: Text('Juni'),
-  subtitle: Text('2026'),
-  trailing: Text('10'),
-),
-Divider(),
-ListTile(
-  leading: Icon(Icons.calendar_month),
-  title: Text('Juli'),
-  subtitle: Text('2026'),
-  trailing: Text('8'),
-),
+          leading: Icon(Icons.place),
+          title: Text('Kantine'),
+          trailing: Text('10'),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.place),
+          title: Text('Fietsenstalling'),
+          trailing: Text('9'),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.place),
+          title: Text('Gymzaal'),
+          trailing: Text('7'),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.place),
+          title: Text('Klaslokaal'),
+          trailing: Text('7'),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.place),
+          title: Text('Aula'),
+          trailing: Text('6'),
+        ),
       ],
     ),
   ),
-),const SizedBox(height: 30),
+),
+const SizedBox(height: 30),
 
             ],
           ),
