@@ -11,8 +11,10 @@ class DirecteurDashboardV2 extends StatefulWidget {
 
 class _DirecteurDashboardV2State
     extends State<DirecteurDashboardV2> {
-
   int totaalIncidenten = 0;
+int incidentenDezeMaand = 0;
+int openDossiers = 0;
+String belangrijksteHotspot = '-';
 
   @override
   void initState() {
@@ -30,9 +32,64 @@ class _DirecteurDashboardV2State
             .select('id')
             .eq('school_id', schoolId);
 
-    setState(() {
-      totaalIncidenten = incidenten.length;
-    });
+    final dezeMaand =
+        await Supabase.instance.client
+            .from('incidenten')
+            .select('id')
+            .eq('school_id', schoolId)
+            .gte(
+              'meldingsdatum',
+              DateTime(
+                DateTime.now().year,
+                DateTime.now().month,
+                1,
+              ).toIso8601String(),
+            );
+            
+          final open =
+    await Supabase.instance.client
+        .from('incidenten')
+        .select('id')
+        .eq('school_id', schoolId)
+        .inFilter(
+          'status',
+          ['Open', 'In behandeling'],
+        );
+        final hotspot =
+    await Supabase.instance.client
+        .from('incidenten')
+        .select('locatie')
+        .eq('school_id', schoolId);
+
+    final locatieTellingen = <String, int>{};
+
+for (final item in hotspot) {
+  final locatie =
+      item['locatie']?.toString() ?? '';
+
+  if (locatie.isEmpty) continue;
+
+  locatieTellingen[locatie] =
+      (locatieTellingen[locatie] ?? 0) + 1;
+}
+
+String hotspotNaam = '-';
+
+if (locatieTellingen.isNotEmpty) {
+  hotspotNaam = locatieTellingen.entries
+      .reduce(
+        (a, b) =>
+            a.value > b.value ? a : b,
+      )
+      .key;
+}
+
+setState(() {
+  totaalIncidenten = incidenten.length;
+  incidentenDezeMaand = dezeMaand.length;
+  openDossiers = open.length;
+  belangrijksteHotspot = hotspotNaam;
+});
   }
 
   @override
@@ -44,8 +101,7 @@ class _DirecteurDashboardV2State
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Directeur Dashboard',
@@ -71,17 +127,17 @@ class _DirecteurDashboardV2State
                   'Totaal incidenten',
                 ),
                 _dashboardKaart(
-                  '0',
+                  incidentenDezeMaand.toString(),
                   'Incidenten deze maand',
                 ),
                 _dashboardKaart(
-                  '0',
-                  'Open dossiers',
+  openDossiers.toString(),
+  'Open dossiers',
                 ),
                 _dashboardKaart(
-                  '-',
-                  'Belangrijkste hotspot',
-                ),
+  belangrijksteHotspot,
+  'Belangrijkste hotspot',
+),
               ],
             ),
           ],
