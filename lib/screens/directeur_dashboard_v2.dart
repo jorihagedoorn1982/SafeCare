@@ -191,6 +191,55 @@ class _DirecteurDashboardV2State
                   ),
                 ),
               ),
+              const SizedBox(height: 30),
+
+const Text(
+  '📈 Meldingen per maand',
+  style: TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+const SizedBox(height: 15),
+
+Card(
+  child: Padding(
+    padding: const EdgeInsets.all(20),
+    child: Column(
+      children: const [
+        ListTile(
+  leading: Icon(Icons.calendar_month),
+  title: Text('April'),
+  subtitle: Text('2026'),
+  trailing: Text('14'),
+),
+Divider(),
+ListTile(
+  leading: Icon(Icons.calendar_month),
+  title: Text('Mei'),
+  subtitle: Text('2026'),
+  trailing: Text('15'),
+),
+Divider(),
+ListTile(
+  leading: Icon(Icons.calendar_month),
+  title: Text('Juni'),
+  subtitle: Text('2026'),
+  trailing: Text('10'),
+),
+Divider(),
+ListTile(
+  leading: Icon(Icons.calendar_month),
+  title: Text('Juli'),
+  subtitle: Text('2026'),
+  trailing: Text('8'),
+),
+      ],
+    ),
+  ),
+),const SizedBox(height: 30),
+
             ],
           ),
         ),
