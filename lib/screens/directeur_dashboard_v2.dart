@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:fl_chart/fl_chart.dart';
+
 
 class DirecteurDashboardV2 extends StatefulWidget {
   const DirecteurDashboardV2({super.key});
@@ -231,9 +231,10 @@ Card(
   ),
 ),
 const SizedBox(height: 30),
+const SizedBox(height: 30),
 
 const Text(
-  '📍 Top 5 hotspots',
+  '🚨 Laatste incidenten',
   style: TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
@@ -248,39 +249,47 @@ Card(
     child: Column(
       children: const [
         ListTile(
-          leading: Icon(Icons.place),
-          title: Text('Kantine'),
-          trailing: Text('10'),
+          leading: Icon(Icons.warning_amber_rounded),
+          title: Text('Agressie'),
+          subtitle: Text('27 juli 2026'),
+          trailing: Text('Open'),
         ),
         Divider(),
+
         ListTile(
-          leading: Icon(Icons.place),
-          title: Text('Fietsenstalling'),
-          trailing: Text('9'),
+          leading: Icon(Icons.warning_amber_rounded),
+          title: Text('Digitale Veiligheid'),
+          subtitle: Text('23 juli 2026'),
+          trailing: Text('In behandeling'),
         ),
         Divider(),
+
         ListTile(
-          leading: Icon(Icons.place),
-          title: Text('Gymzaal'),
-          trailing: Text('7'),
+          leading: Icon(Icons.warning_amber_rounded),
+          title: Text('Digitale Veiligheid'),
+          subtitle: Text('22 juli 2026'),
+          trailing: Text('Afgerond'),
         ),
         Divider(),
+
         ListTile(
-          leading: Icon(Icons.place),
-          title: Text('Klaslokaal'),
-          trailing: Text('7'),
+          leading: Icon(Icons.warning_amber_rounded),
+          title: Text('Overlast & Strafbaar Gedrag'),
+          subtitle: Text('22 juli 2026'),
+          trailing: Text('Open'),
         ),
         Divider(),
+
         ListTile(
-          leading: Icon(Icons.place),
-          title: Text('Aula'),
-          trailing: Text('6'),
+          leading: Icon(Icons.warning_amber_rounded),
+          title: Text('Agressie'),
+          subtitle: Text('19 juli 2026'),
+          trailing: Text('In behandeling'),
         ),
       ],
     ),
   ),
 ),
-const SizedBox(height: 30),
 
             ],
           ),
