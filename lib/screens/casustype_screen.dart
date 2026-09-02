@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'betrokkenen_screen.dart';
-import '../widgets/safecare_appbar.dart';
 
 class CasusTypeScreen extends StatelessWidget {
   const CasusTypeScreen({super.key});

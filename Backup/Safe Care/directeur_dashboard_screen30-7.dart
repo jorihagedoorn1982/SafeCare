@@ -2,20 +2,17 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../widgets/safecare_appbar.dart';
-import 'besturen_screen.dart';
-import 'scholen_screen.dart';
-import 'gebruikers_screen.dart';
 
-class DashboardHomeScreen extends StatefulWidget {
-  const DashboardHomeScreen({super.key});
+class DirecteurDashboardScreen extends StatefulWidget {
+  const DirecteurDashboardScreen({super.key});
 
   @override
-  State<DashboardHomeScreen> createState() =>
-      _DashboardHomeScreenState();
+  State<DirecteurDashboardScreen> createState() =>
+      _DirecteurDashboardScreenState();
 }
 
-class _DashboardHomeScreenState
-    extends State<DashboardHomeScreen> {
+class _DirecteurDashboardScreenState
+    extends State<DirecteurDashboardScreen> {
 
   String gebruikerEmail = "";
   String gebruikerNaam = "";
@@ -59,12 +56,7 @@ List<Map<String, dynamic>> alleIncidenten = [];
   @override
 void initState() {
   super.initState();
-@override
-void initState() {
-  super.initState();
 
-  print('DASHBOARD HOME SCREEN GELADEN');
-}
   gebruikerEmail =
       Supabase.instance.client.auth.currentUser?.email ?? "";
 
@@ -509,231 +501,173 @@ final hoogsteTijdvak =
 }
 
   @override
-  Widget build(BuildContext context) {
-    final gesorteerdeMaanden =
-    meldingenPerMaand.entries.toList()
-      ..sort(
-        (a, b) {
-          final aSplit = a.key.split('-');
-          final bSplit = b.key.split('-');
+  @override
+Widget build(BuildContext context) {
+  final gesorteerdeMaanden = meldingenPerMaand.entries.toList()
+    ..sort(
+      (a, b) {
+        final aSplit = a.key.split('-');
+        final bSplit = b.key.split('-');
 
-          final aDatum = DateTime(
-            int.parse(aSplit[1]),
-            int.parse(aSplit[0]),
-          );
+        final aDatum = DateTime(
+          int.parse(aSplit[1]),
+          int.parse(aSplit[0]),
+        );
 
-          final bDatum = DateTime(
-            int.parse(bSplit[1]),
-            int.parse(bSplit[0]),
-          );
+        final bDatum = DateTime(
+          int.parse(bSplit[1]),
+          int.parse(bSplit[0]),
+        );
 
-          return aDatum.compareTo(bDatum);
-        },
-      );
-    return Scaffold(
-      appBar: SafeCareAppBar(
-        titel: "Dashboard",
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await Supabase.instance.client.auth.signOut();
+        return aDatum.compareTo(bDatum);
+      },
+    );
 
-              if (!mounted) return;
+  return Scaffold(
+    appBar: SafeCareAppBar(
+      titel: "Dashboard",
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.logout),
+          onPressed: () async {
+            await Supabase.instance.client.auth.signOut();
 
-              Navigator.popUntil(
-                context,
-                (route) => route.isFirst,
-              );
-            },
+            if (!mounted) return;
+
+            Navigator.popUntil(
+              context,
+              (route) => route.isFirst,
+            );
+          },
+        ),
+      ],
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                gebruikerNaam,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                gebruikerRol,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                gebruikerEmail,
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+
+          Expanded(
+            child: ListView(
+              children: [
+                GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 3,
+                  childAspectRatio: 3.2,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                  children: [
+                    _kaartKlikbaar(
+                      "Totaal incidenten",
+                      totaalMeldingen.toString(),
+                      () {
+                        _toonTotaalIncidentenDetails(context);
+                      },
+                    ),
+                    _kaartKlikbaar(
+                      "Incidenten deze maand",
+                      meldingenDezeMaand.toString(),
+                      () {
+                        _toonDezeMaandDetails(context);
+                      },
+                    ),
+                    _kaartKlikbaar(
+                      "Trend",
+                      trendMeldingen,
+                      () {
+                        _toonTrendDetails(context);
+                      },
+                    ),
+                    _kaart(
+                      "Belangrijkste hotspot",
+                      topLocaties.isEmpty
+                          ? "-"
+                          : "${topLocaties.first.key}\n${topLocaties.first.value} meldingen",
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 30),
+
+                const Text(
+                  "Verdeling meldingen per maand",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _maandDiagram(
+                  context,
+                  gesorteerdeMaanden,
+                ),
+
+                const SizedBox(height: 30),
+
+                const Text(
+                  "🔥 Incidenttypen per categorie",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _incidenttypenPerCategorieDiagram(
+                  incidenttypenPerCategorie,
+                ),
+
+                const SizedBox(height: 30),
+
+                const Text(
+                  "📍 Hotspots binnen de school",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _hotspotsBinnenSchoolDiagram(
+                  topLocaties,
+                ),
+
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-          children: [
-            Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Text(
-      gebruikerNaam,
-      style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    Text(
-      gebruikerRol,
-      style: const TextStyle(
-        fontSize: 14,
-        color: Colors.grey,
-      ),
-    ),
-    Text(
-      gebruikerEmail,
-      style: const TextStyle(
-        fontSize: 14,
-      ),
-    ),
-  ],
-),
-
-            const SizedBox(height: 20),
-
-            if (gebruikerRol == 'admin')
-  Wrap(
-    spacing: 10,
-    runSpacing: 10,
-    children: [
-      ElevatedButton.icon(
-        onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const BesturenScreen(),
     ),
   );
-},
-        icon: const Icon(Icons.account_balance),
-        label: const Text('Besturen'),
-      ),
-      ElevatedButton.icon(
-        onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const ScholenScreen(),
-    ),
-  );
-},
-        icon: const Icon(Icons.school),
-        label: const Text('Scholen'),
-      ),
-      ElevatedButton.icon(
-        onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) =>
-          const GebruikersScreen(),
-    ),
-  );
-},
-        icon: const Icon(Icons.people),
-        label: const Text('Gebruikers'),
-      ),
-    ],
-  ),
-  const SizedBox(height: 20),
-
-            Expanded(
-              child: ListView(
-                children: [
-                  GridView.count(
-  shrinkWrap: true,
-  physics: const NeverScrollableScrollPhysics(),
-  crossAxisCount: 3,
-  childAspectRatio:3.2,
-  crossAxisSpacing: 15,
-  mainAxisSpacing: 15,
-  children: [
-  _kaartKlikbaar(
-  "Totaal incidenten",
-  totaalMeldingen.toString(),
-  () {
-    _toonTotaalIncidentenDetails(context);
-  },
-),
-  _kaartKlikbaar(
-  "Incidenten deze maand",
-  meldingenDezeMaand.toString(),
-  () {
-    _toonDezeMaandDetails(context);
-  },
-),
-  _kaartKlikbaar(
-  "Trend",
-  trendMeldingen,
-  () {
-    _toonTrendDetails(context);
-  },
-),
-  _kaart(
-    "Aandachtsschool",
-    topScholen.isEmpty
-        ? "-"
-        : "${topScholen.first.key}\n${topScholen.first.value} meldingen",
-  ),
-  _kaart(
-    "Piekmaand",
-    piekMaand,
-  ),
-],
-),
-
-
-const SizedBox(height: 30),
-
-
-                  const Text(
-  "Verdeling meldingen per maand",
-  style: TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-  ),
-),
-
-const SizedBox(height: 10),
-
-_maandDiagram(context, gesorteerdeMaanden),
-
-const SizedBox(height: 30),
-
-const Text(
-  "🔥 Incidenttypen per categorie",
-  style: TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-  ),
-),
-
-const SizedBox(height: 10),
-
-_incidenttypenPerCategorieDiagram(
-  incidenttypenPerCategorie,
-),
-
-const SizedBox(height: 30),
-
-
-const Text(
-  "🏫 Scholen en hotspots",
-  style: TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-  ),
-),
-
-const SizedBox(height: 10),
-
-_scholenMetLocatiesDiagram(
-  topScholen,
-  locatiesPerSchool,
-),
-
-const SizedBox(height: 30),
-
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+}
   IconData _icoonVoorCategorie(String categorieNaam) {
   switch (categorieNaam) {
     case "Agressie":
@@ -928,6 +862,85 @@ valueColor:
             );
           }),
         ],
+      ),
+    ),
+  );
+}
+Widget _hotspotsBinnenSchoolDiagram(
+  List<MapEntry<String, int>> locatiesData,
+) {
+  final topLocaties = locatiesData.take(8).toList();
+
+  if (topLocaties.isEmpty) {
+    return const Card(
+      elevation: 1,
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Text(
+          "Geen locatiegegevens beschikbaar.",
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+      ),
+    );
+  }
+
+  final hoogsteAantal =
+      topLocaties.first.value == 0 ? 1 : topLocaties.first.value;
+
+  return Card(
+    elevation: 1,
+    child: Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: topLocaties.map((locatie) {
+          final percentage = locatie.value / hoogsteAantal;
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 14),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 190,
+                  child: Text(
+                    locatie.key,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: LinearProgressIndicator(
+                      value: percentage,
+                      minHeight: 9,
+                      backgroundColor: const Color(0xFFE7ECEF),
+                      valueColor:
+                          const AlwaysStoppedAnimation<Color>(
+                        Color(0xFF68A09F),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                SizedBox(
+                  width: 70,
+                  child: Text(
+                    "${locatie.value}x",
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
       ),
     ),
   );
@@ -1290,16 +1303,21 @@ void _toonMaandDetails(BuildContext context, String maandKey) {
   }).toList();
 
   final Map<String, int> perSchool = {};
-  final Map<String, int> incidenttypen = {};
+  final Map<String, int> perLocatie = {};
+  final Map<String, int> incidenttypen = {}; 
 
   for (final incident in incidentenDezeMaand) {
-    final school = incident['school']?.toString() ?? '';
-    final categorie = incident['categorie']?.toString() ?? '';
-    final subcategorie = incident['subcategorie']?.toString() ?? '';
+  final school = incident['school']?.toString() ?? '';
+  final locatie = incident['locatie']?.toString() ?? '';
+  final categorie = incident['categorie']?.toString() ?? '';
+  final subcategorie = incident['subcategorie']?.toString() ?? '';
 
     if (school.isNotEmpty) {
       perSchool[school] = (perSchool[school] ?? 0) + 1;
     }
+    if (locatie.isNotEmpty) {
+  perLocatie[locatie] = (perLocatie[locatie] ?? 0) + 1;
+}
 
     final types = _incidentTypesUitSubcategorie(subcategorie);
 
@@ -1316,6 +1334,9 @@ void _toonMaandDetails(BuildContext context, String maandKey) {
 
   final scholenGesorteerd = perSchool.entries.toList()
     ..sort((a, b) => b.value.compareTo(a.value));
+  
+  final locatiesGesorteerd = perLocatie.entries.toList()
+  ..sort((a, b) => b.value.compareTo(a.value));
 
   final incidenttypenGesorteerd = incidenttypen.entries.toList()
     ..sort((a, b) => b.value.compareTo(a.value));
@@ -1323,6 +1344,9 @@ void _toonMaandDetails(BuildContext context, String maandKey) {
   final hoogsteSchoolAantal =
       scholenGesorteerd.isEmpty ? 1 : scholenGesorteerd.first.value;
 
+  final hoogsteLocatieAantal =
+    locatiesGesorteerd.isEmpty ? 1 : locatiesGesorteerd.first.value;
+  
   final hoogsteIncidenttypeAantal =
       incidenttypenGesorteerd.isEmpty ? 1 : incidenttypenGesorteerd.first.value;
 
@@ -1347,13 +1371,15 @@ void _toonMaandDetails(BuildContext context, String maandKey) {
                 ),
                 const SizedBox(height: 20),
 
-                const Text(
-                  "Verdeling per school",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text(
+  gebruikerRol == 'directeur'
+      ? "Hotspots in deze maand"
+      : "Verdeling per school",
+  style: const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  ),
+),
                 const SizedBox(height: 10),
 
                 if (scholenGesorteerd.isEmpty)

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import 'netwerkpartners_screen.dart';
+import 'controle_screen.dart';
 
 class MiddelenBezitScreen extends StatefulWidget {
   const MiddelenBezitScreen({super.key});
@@ -141,7 +141,7 @@ class _MiddelenBezitScreenState
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      const NetwerkpartnersScreen(),
+                      const ControleScreen(),
                 ),
               );
             },

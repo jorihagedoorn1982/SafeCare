@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import 'netwerkpartners_screen.dart';
+import 'controle_screen.dart';
 
 class DigitaleVeiligheidScreen extends StatefulWidget {
   const DigitaleVeiligheidScreen({super.key});
@@ -154,7 +154,7 @@ class _DigitaleVeiligheidScreenState
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      const NetwerkpartnersScreen(),
+                      const ControleScreen(),
                 ),
               );
             },

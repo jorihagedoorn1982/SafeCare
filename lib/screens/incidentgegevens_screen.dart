@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../main.dart';
 import '../widgets/safecare_appbar.dart';
-import 'netwerkpartners_screen.dart';
+import 'controle_screen.dart';
 
 class IncidentGegevensScreen extends StatefulWidget {
   const IncidentGegevensScreen({super.key});
@@ -283,7 +283,7 @@ class _IncidentGegevensScreenState
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        const NetwerkpartnersScreen(),
+                        const ControleScreen(),
                   ),
                 );
               },

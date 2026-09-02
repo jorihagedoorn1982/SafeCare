@@ -59,12 +59,7 @@ List<Map<String, dynamic>> alleIncidenten = [];
   @override
 void initState() {
   super.initState();
-@override
-void initState() {
-  super.initState();
 
-  print('DASHBOARD HOME SCREEN GELADEN');
-}
   gebruikerEmail =
       Supabase.instance.client.auth.currentUser?.email ?? "";
 
@@ -1084,19 +1079,13 @@ Widget _scholenMetLocatiesDiagram(
   );
 
   final kleuren = [
-  Color(0xFF22415B),
-  Color(0xFF68A09F),
-  Color(0xFFCFB233),
-  Color(0xFFB56664),
-  Color(0xFF9EC9CB),
-  Color(0xFFEFDA89),
-  Color(0xFF934745),
-  Color(0xFFDA907E),
-  Color(0xFFEDAFA2),
-  Color(0xFFF4E7B9),
-  Color(0xFFECD2CA),
-  Color(0xFF10212D),
-];
+    Color(0xFF1E88E5),
+    Color(0xFF43A047),
+    Color(0xFFF9A825),
+    Color(0xFFE53935),
+    Color(0xFF8E24AA),
+    Color(0xFF00ACC1),
+  ];
 
   return Card(
     elevation: 1,

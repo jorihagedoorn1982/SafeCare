@@ -117,36 +117,6 @@ const SizedBox(height: 20),
                   : incidentData.categorieen.join(", "),
             ),
 
-            const SizedBox(height: 20),
-
-            const Text(
-              "Netwerkpartners",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              incidentData.netwerkpartners.isEmpty
-                  ? "Geen netwerkpartners geselecteerd"
-                  : incidentData.netwerkpartners.join(", "),
-            ),
-
-            const SizedBox(height: 20),
-
-            const Text(
-              "Afhandeling",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              incidentData.afhandeling.isEmpty
-                  ? "Geen afhandeling geselecteerd"
-                  : incidentData.afhandeling.join(", "),
-            ),
-
                         const SizedBox(height: 40),
 
             ElevatedButton(
@@ -160,6 +130,7 @@ const SizedBox(height: 20),
   locatie: incidentData.locatieDuiding,
   omschrijving: incidentData.omschrijving,
   incidentdatum: incidentData.incidentDatum,
+  tijdvak: incidentData.tijdvak,
   school: incidentData.school,
   schoolId: incidentData.schoolId,
   bestuurId: incidentData.bestuurId,
@@ -183,15 +154,6 @@ for (final item in incidentData.betrokkenen) {
       onderwijsniveau: onderwijsniveau,
     );
   }
-}
-
-for (final maatregel in incidentData.afhandeling) {
-  await SupabaseService().saveAfhandeling(
-    incidentId: incidentId,
-    maatregel: maatregel,
-    netwerkpartner:
-        incidentData.netwerkpartners.join(', '),
-  );
 }
 
                   Navigator.pushReplacement(

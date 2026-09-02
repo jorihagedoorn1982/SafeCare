@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import 'netwerkpartners_screen.dart';
 import '../widgets/safecare_appbar.dart';
+import 'controle_screen.dart';
 
 class AgressieScreen extends StatefulWidget {
   const AgressieScreen({super.key});
@@ -119,7 +119,7 @@ class _AgressieScreenState
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      const NetwerkpartnersScreen(),
+                      const ControleScreen(),
                 ),
               );
             },

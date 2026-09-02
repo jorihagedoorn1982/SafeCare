@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import 'netwerkpartners_screen.dart';
+import 'controle_screen.dart';
 
 class ZorgVeiligheidScreen extends StatefulWidget {
   const ZorgVeiligheidScreen({super.key});
@@ -414,7 +414,7 @@ const SizedBox(height: 30),
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      const NetwerkpartnersScreen(),
+                      const ControleScreen(),
                 ),
               );
             },

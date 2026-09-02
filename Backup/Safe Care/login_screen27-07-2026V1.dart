@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'directeur_dashboard_screen.dart';
+
 import 'dashboard_screen.dart';
 import '../widgets/safecare_appbar.dart';
 
@@ -30,40 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (!mounted) return;
 
-      final user = Supabase.instance.client.auth.currentUser;
-
-if (user == null) {
-  return;
-}
-
-final profiel = await Supabase.instance.client
-    .from('profielen')
-    .select('rol')
-    .eq('id', user.id)
-    .maybeSingle();
-
-final rol = profiel?['rol']?.toString();
-
-if (!mounted) return;
-
-Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (context) {
-      if (rol == 'directeur') {
-  return const Scaffold(
-    body: Center(
-      child: Text(
-        'DIRECTEUR ROUTE WERKT',
-      ),
-    ),
-  );
-}
-
-      return DashboardScreen();
-    },
-  ),
-);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DashboardScreen(),
+        ),
+      );
     } on AuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

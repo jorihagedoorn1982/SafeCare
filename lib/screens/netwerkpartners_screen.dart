@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import 'afhandeling_screen.dart';
 import 'gemeente_screen.dart';
 import 'intern_screen.dart';
 import 'zorgpartner_screen.dart';
 import '../widgets/safecare_appbar.dart';
+import 'controle_screen.dart';
 
 class NetwerkpartnersScreen extends StatefulWidget {
   const NetwerkpartnersScreen({super.key});
@@ -78,12 +78,11 @@ class _NetwerkpartnersScreenState
             ),
             onTap: () {
               Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      const GemeenteScreen(),
-                ),
-              );
+  context,
+  MaterialPageRoute(
+    builder: (context) => const ControleScreen(),
+  ),
+);
             },
           ),
 
@@ -120,19 +119,17 @@ class _NetwerkpartnersScreenState
           ),
 
           const SizedBox(height: 30),
-
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      const AfhandelingScreen(),
-                ),
-              );
-            },
-            child: const Text("VOLGENDE"),
-          ),
+ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ControleScreen(),
+      ),
+    );
+  },
+  child: const Text("VOLGENDE"),
+),
         ],
       ),
     );

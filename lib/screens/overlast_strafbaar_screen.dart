@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import 'netwerkpartners_screen.dart';
+import 'controle_screen.dart';
 
 class OverlastStrafbaarScreen extends StatefulWidget {
   const OverlastStrafbaarScreen({super.key});
@@ -145,7 +145,7 @@ class _OverlastStrafbaarScreenState
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      const NetwerkpartnersScreen(),
+                      const ControleScreen(),
                 ),
               );
             },

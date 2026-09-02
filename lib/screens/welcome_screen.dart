@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'incidentcategorie_screen.dart';
 import 'dashboard_screen.dart';
 
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
@@ -53,14 +54,14 @@ class WelcomeScreen extends StatelessWidget {
                   height: 55,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const IncidentCategorieScreen(),
-                        ),
-                      );
-                    },
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) =>
+          const IncidentCategorieScreen(),
+    ),
+  );
+},
                     child: const Text(
                       'START NIEUWE MELDING',
                     ),
@@ -77,8 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              DashboardScreen(),
+                          builder: (context) => DashboardScreen(),
                         ),
                       );
                     },
