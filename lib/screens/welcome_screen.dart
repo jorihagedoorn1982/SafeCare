@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'incidentcategorie_screen.dart';
 import 'dashboard_screen.dart';
+import 'directeur_dashboard_v2.dart';
 
 
 class WelcomeScreen extends StatelessWidget {
@@ -78,7 +79,8 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DashboardScreen(),
+                          builder: (context) =>
+    const DirecteurDashboardV2(),
                         ),
                       );
                     },

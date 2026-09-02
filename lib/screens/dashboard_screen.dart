@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dashboard_home_screen.dart';
 import 'directeur_dashboard_screen.dart';
 import 'login_screen.dart';
+import 'directeur_dashboard_v2.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -46,13 +47,7 @@ class DashboardScreen extends StatelessWidget {
         final rol = snapshot.data;
 
         if (rol == 'directeur') {
-  return const Scaffold(
-    body: Center(
-      child: Text(
-        'DIRECTEUR ROUTE WERKT',
-      ),
-    ),
-  );
+  return const DirecteurDashboardV2();
 }
 
         return const DashboardHomeScreen();
