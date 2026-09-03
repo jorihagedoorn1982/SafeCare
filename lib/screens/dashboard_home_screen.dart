@@ -59,17 +59,13 @@ List<Map<String, dynamic>> alleIncidenten = [];
   @override
 void initState() {
   super.initState();
-@override
-void initState() {
-  super.initState();
 
   print('DASHBOARD HOME SCREEN GELADEN');
-}
+
   gebruikerEmail =
       Supabase.instance.client.auth.currentUser?.email ?? "";
 
   laadProfiel();
-
 }
 
 Future<void> laadProfiel() async {
@@ -78,12 +74,14 @@ Future<void> laadProfiel() async {
         Supabase.instance.client.auth.currentUser;
 
     if (user == null) return;
+    
+print('AUTH USER ID: ${user.id}');
 
     final resultaat =
         await Supabase.instance.client
             .from('profielen')
             .select()
-            .eq('id', user.id);
+            .eq('email', user.email!);
 
     if (resultaat.isEmpty) {
       print("Geen profiel gevonden");
@@ -171,6 +169,10 @@ Map<String, int> openPerSchoolTemp = {};
 Map<String, Map<String, int>> categoriePerSchoolTemp = {};
 Map<String, int> scholenTemp = {};
 List<Map<String, dynamic>> geldigeIncidenten = [];
+
+print('ROL: $gebruikerRol');
+print('BESTUUR ID: $gebruikerBestuurId');
+print('INCIDENTEN GEVONDEN: ${incidenten.length}');
 
   for (final incident in incidenten) {
     final categorie =
