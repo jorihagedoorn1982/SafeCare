@@ -1154,7 +1154,7 @@ Widget _scholenMetLocatiesDiagram(
           ),
         ),
         Text(
-          "${maand.value} meldingen (${percentage.toStringAsFixed(0)}%)",
+          "${maand.value} meldingen",
         ),
       ],
     ),

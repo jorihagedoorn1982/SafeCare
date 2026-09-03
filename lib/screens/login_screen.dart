@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'directeur_dashboard_screen.dart';
 import 'dashboard_screen.dart';
 import '../widgets/safecare_appbar.dart';
+import 'directeur_dashboard_v2.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,13 +52,7 @@ Navigator.pushReplacement(
   MaterialPageRoute(
     builder: (context) {
       if (rol == 'directeur') {
-  return const Scaffold(
-    body: Center(
-      child: Text(
-        'DIRECTEUR ROUTE WERKT',
-      ),
-    ),
-  );
+  return const DirecteurDashboardV2();
 }
 
       return DashboardScreen();

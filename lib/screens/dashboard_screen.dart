@@ -15,14 +15,20 @@ class DashboardScreen extends StatelessWidget {
     if (user == null) {
       return null;
     }
+print('EMAIL IN DASHBOARDSCREEN: ${user.email}');
 
-    final profiel = await Supabase.instance.client
-        .from('profielen')
-        .select('rol')
-        .eq('id', user.id)
-        .maybeSingle();
+final resultaat = await Supabase.instance.client
+    .from('profielen')
+    .select()
+    .eq('email', user.email!);
 
-    return profiel?['rol']?.toString();
+print('RESULTAAT DASHBOARDSCREEN: $resultaat');
+
+if (resultaat.isEmpty) {
+  return null;
+}
+
+return resultaat.first['rol']?.toString();
   }
 
   @override
@@ -45,7 +51,7 @@ class DashboardScreen extends StatelessWidget {
         }
 
         final rol = snapshot.data;
-
+print('ROL IN DASHBOARDSCREEN: $rol');
         if (rol == 'directeur') {
   return const DirecteurDashboardV2();
 }
