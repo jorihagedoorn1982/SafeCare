@@ -98,8 +98,24 @@ class _DirecteurDashboardV2State
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Directeur Dashboard'),
-      ),
+  title: const Text('Directeur Dashboard'),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.logout),
+      tooltip: 'Uitloggen',
+      onPressed: () async {
+        await Supabase.instance.client.auth.signOut();
+
+        if (!mounted) return;
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/',
+          (route) => false,
+        );
+      },
+    ),
+  ],
+),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
