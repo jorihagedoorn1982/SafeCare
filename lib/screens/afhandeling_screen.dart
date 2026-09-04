@@ -4,7 +4,6 @@ import 'controle_screen.dart';
 import 'afhandeling_intern_screen.dart';
 import '../widgets/safecare_appbar.dart';
 
-
 class AfhandelingScreen extends StatefulWidget {
   const AfhandelingScreen({super.key});
 
@@ -15,6 +14,8 @@ class AfhandelingScreen extends StatefulWidget {
 
 class _AfhandelingScreenState
     extends State<AfhandelingScreen> {
+  String statusDossier = 'Open';
+
   bool aangifte = false;
   bool zorgtraject = false;
   bool overdrachtKetenpartner = false;
@@ -37,11 +38,57 @@ class _AfhandelingScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SafeCareAppBar(
-titel: "Afhandeling",
-),
+        titel: "Afhandeling",
+      ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
+          const Text(
+            "Status dossier",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          RadioListTile<String>(
+            title: const Text("Open"),
+            value: "Open",
+            groupValue: statusDossier,
+            onChanged: (value) {
+              setState(() {
+                statusDossier = value!;
+                incidentData.statusDossier = value;
+              });
+            },
+          ),
+
+          RadioListTile<String>(
+            title: const Text("In behandeling"),
+            value: "In behandeling",
+            groupValue: statusDossier,
+            onChanged: (value) {
+              setState(() {
+                statusDossier = value!;
+                incidentData.statusDossier = value;
+              });
+            },
+          ),
+
+          RadioListTile<String>(
+            title: const Text("Afgerond"),
+            value: "Afgerond",
+            groupValue: statusDossier,
+            onChanged: (value) {
+              setState(() {
+                statusDossier = value!;
+                incidentData.statusDossier = value;
+              });
+            },
+          ),
+
+          const Divider(),
+
           ListTile(
             title: const Text("Intern opgepakt"),
             trailing: const Icon(

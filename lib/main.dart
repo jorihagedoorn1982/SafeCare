@@ -31,6 +31,7 @@ class IncidentData {
   // Afhandeling
   List<String> netwerkpartners = [];
   List<String> afhandeling = [];
+  String statusDossier = 'Open';
 
   // Melder
   String melderEmail = "";

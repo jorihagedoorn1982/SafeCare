@@ -116,7 +116,19 @@ const SizedBox(height: 20),
                   ? "Geen subcategorie geselecteerd"
                   : incidentData.categorieen.join(", "),
             ),
+const SizedBox(height: 20),
 
+const Text(
+  "Status dossier",
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+Text(
+  incidentData.statusDossier,
+),
                         const SizedBox(height: 40),
 
             ElevatedButton(
