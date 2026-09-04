@@ -55,16 +55,31 @@ class SupabaseService {
     });
   }
 
-  Future<void> saveAfhandeling({
-  required int incidentId,
-  required String maatregel,
-  String? netwerkpartner,
-}) async {
+    Future<void> saveAfhandeling({
+    required int incidentId,
+    required String maatregel,
+    String? netwerkpartner,
+  }) async {
     await supabase.from('afhandeling').insert({
-  'incident_id': incidentId,
-  'maatregel': maatregel,
-  'netwerkpartner': netwerkpartner,
-  'datum': DateTime.now().toIso8601String(),
-});
+      'incident_id': incidentId,
+      'maatregel': maatregel,
+      'netwerkpartner': netwerkpartner,
+      'datum': DateTime.now().toIso8601String(),
+    });
+  }
+
+  Future<void> saveIncidentUpdate({
+    required int incidentId,
+    required String status,
+    required String opmerking,
+    String? gebruikerEmail,
+  }) async {
+    await supabase.from('incident_updates').insert({
+      'incident_id': incidentId,
+      'status': status,
+      'opmerking': opmerking,
+      'gebruiker_email': gebruikerEmail,
+      'created_at': DateTime.now().toIso8601String(),
+    });
   }
 }

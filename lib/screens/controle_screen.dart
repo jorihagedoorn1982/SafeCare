@@ -147,6 +147,12 @@ Text(
   schoolId: incidentData.schoolId,
   bestuurId: incidentData.bestuurId,
 );
+await SupabaseService().saveIncidentUpdate(
+  incidentId: incidentId,
+  status: incidentData.statusDossier,
+  opmerking: 'Incident aangemaakt',
+  gebruikerEmail: incidentData.melderEmail,
+);
 for (final item in incidentData.betrokkenen) {
   final delen = item.split(' - ');
 

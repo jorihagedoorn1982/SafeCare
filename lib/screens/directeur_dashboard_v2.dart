@@ -15,6 +15,7 @@ class _DirecteurDashboardV2State
   int totaalIncidenten = 0;
   int incidentenDezeMaand = 0;
   int openDossiers = 0;
+  List<dynamic> laatsteIncidenten = [];
 
   String belangrijksteHotspot = '-';
 
@@ -31,7 +32,7 @@ class _DirecteurDashboardV2State
     final incidenten =
         await Supabase.instance.client
             .from('incidenten')
-            .select('id')
+            .select()
             .eq('school_id', schoolId);
 
     final dezeMaand =
@@ -79,19 +80,34 @@ class _DirecteurDashboardV2State
     String hotspotNaam = '-';
 
     if (locatieTellingen.isNotEmpty) {
-      hotspotNaam = locatieTellingen.entries
-          .reduce(
-            (a, b) => a.value > b.value ? a : b,
-          )
-          .key;
-    }
+  hotspotNaam = locatieTellingen.entries
+      .reduce(
+        (a, b) => a.value > b.value ? a : b,
+      )
+      .key;
+}
 
-    setState(() {
-      totaalIncidenten = incidenten.length;
-      incidentenDezeMaand = dezeMaand.length;
-      openDossiers = open.length;
-      belangrijksteHotspot = hotspotNaam;
-    });
+final laatste = List.from(incidenten);
+
+laatste.sort((a, b) {
+  return DateTime.parse(
+    b['meldingsdatum'],
+  ).compareTo(
+    DateTime.parse(
+      a['meldingsdatum'],
+    ),
+  );
+});
+
+setState(() {
+  totaalIncidenten = incidenten.length;
+  incidentenDezeMaand = dezeMaand.length;
+  openDossiers = open.length;
+  belangrijksteHotspot = hotspotNaam;
+
+  laatsteIncidenten =
+      laatste.take(5).toList();
+});
   }
 
   @override
@@ -209,7 +225,15 @@ class _DirecteurDashboardV2State
                 ),
               ),
               const SizedBox(height: 30),
+const Text(
+  '📈 Meldingen per maand',
+  style: TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  ),
+),
 
+const SizedBox(height: 15),
 Card(
   child: Padding(
     padding: const EdgeInsets.all(20),
@@ -263,46 +287,33 @@ Card(
   child: Padding(
     padding: const EdgeInsets.all(20),
     child: Column(
-      children: const [
-        ListTile(
-          leading: Icon(Icons.warning_amber_rounded),
-          title: Text('Agressie'),
-          subtitle: Text('27 juli 2026'),
-          trailing: Text('Open'),
-        ),
-        Divider(),
-
-        ListTile(
-          leading: Icon(Icons.warning_amber_rounded),
-          title: Text('Digitale Veiligheid'),
-          subtitle: Text('23 juli 2026'),
-          trailing: Text('In behandeling'),
-        ),
-        Divider(),
-
-        ListTile(
-          leading: Icon(Icons.warning_amber_rounded),
-          title: Text('Digitale Veiligheid'),
-          subtitle: Text('22 juli 2026'),
-          trailing: Text('Afgerond'),
-        ),
-        Divider(),
-
-        ListTile(
-          leading: Icon(Icons.warning_amber_rounded),
-          title: Text('Overlast & Strafbaar Gedrag'),
-          subtitle: Text('22 juli 2026'),
-          trailing: Text('Open'),
-        ),
-        Divider(),
-
-        ListTile(
-          leading: Icon(Icons.warning_amber_rounded),
-          title: Text('Agressie'),
-          subtitle: Text('19 juli 2026'),
-          trailing: Text('In behandeling'),
-        ),
-      ],
+      children: laatsteIncidenten.map((incident) {
+        return Column(
+          children: [
+            ListTile(
+              leading: const Icon(
+                Icons.warning_amber_rounded,
+              ),
+              title: Text(
+                incident['categorie']?.toString() ??
+                    'Onbekend',
+              ),
+              subtitle: Text(
+                incident['meldingsdatum']
+                        ?.toString()
+                        .split('T')
+                        .first ??
+                    '',
+              ),
+              trailing: Text(
+                incident['status']?.toString() ??
+                    'Open',
+              ),
+            ),
+            const Divider(),
+          ],
+        );
+      }).toList(),
     ),
   ),
 ),
