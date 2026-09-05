@@ -19,6 +19,9 @@ class _IncidentDetailScreenState
   String status = 'Geen updates gevonden';
   List<dynamic> tijdlijn = [];
 
+final TextEditingController
+    notitieController =
+        TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -70,6 +73,27 @@ Future<void> _wijzigStatus(
   } catch (e) {
     print('FOUT BIJ OPSLAAN: $e');
   }
+}
+
+Future<void> _opslaanNotitie() async {
+  if (notitieController.text.trim().isEmpty) {
+    return;
+  }
+
+  await Supabase.instance.client
+      .from('incident_updates')
+      .insert({
+    'incident_id': widget.incidentId,
+    'status': status,
+    'opmerking':
+        notitieController.text.trim(),
+    'created_at':
+        DateTime.now().toIso8601String(),
+  });
+
+  notitieController.clear();
+
+  await _laadGegevens();
 }
   @override
   Widget build(BuildContext context) {
@@ -153,6 +177,35 @@ Wrap(
   child: const Text('Afgerond'),
 ),
   ],
+),const SizedBox(height: 30),
+
+const Text(
+  'Notitie',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+const SizedBox(height: 10),
+
+TextField(
+  controller: notitieController,
+  maxLines: 3,
+  decoration: const InputDecoration(
+    border: OutlineInputBorder(),
+    hintText:
+        'Voer een notitie toe...',
+  ),
+),
+
+const SizedBox(height: 10),
+
+ElevatedButton(
+  onPressed: _opslaanNotitie,
+  child: const Text(
+    'NOTITIE OPSLAAN',
+  ),
 ),
             const SizedBox(height: 30),
 
