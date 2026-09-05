@@ -38,16 +38,22 @@ Future<void> _opslaanCasus() async {
       'vervolgactie': vervolgController.text,
       'status': 'In behandeling',
     });
+    await Supabase.instance.client
+    .from('incident_updates')
+    .insert({
+  'incident_id': widget.incidentId,
+  'status': 'In behandeling',
+  'opmerking':
+      'Casus in behandeling genomen',
+  'created_at':
+      DateTime.now().toIso8601String(),
+});
 
     print('CASUS OPGESLAGEN');
 
     if (!mounted) return;
-    
-ScaffoldMessenger.of(context).showSnackBar(
-  const SnackBar(
-    content: Text('OPSLAAN WERKT'),
-  ),
-);
+
+Navigator.pop(context);
   } catch (e) {
     print('FOUT: $e');
   }

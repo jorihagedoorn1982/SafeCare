@@ -18,7 +18,8 @@ class IncidentDetailScreen extends StatefulWidget {
 class _IncidentDetailScreenState
     extends State<IncidentDetailScreen> {
   String status = 'Geen updates gevonden';
-  List<dynamic> tijdlijn = [];
+List<dynamic> tijdlijn = [];
+List<dynamic> afhandelingen = [];
 
 final TextEditingController
     notitieController =
@@ -35,15 +36,24 @@ final TextEditingController
         .select()
         .eq('incident_id', widget.incidentId)
         .order('created_at');
-
+final afhandelingData =
+    await Supabase.instance.client
+        .from('casus_afhandeling')
+        .select()
+        .eq(
+          'incident_id',
+          widget.incidentId,
+        )
+        .order('created_at');
     if (updates.isNotEmpty) {
   setState(() {
-    tijdlijn = updates;
+  tijdlijn = updates;
+  afhandelingen = afhandelingData;
 
-    status =
-        updates.first['status']?.toString() ??
-            'Onbekend';
-  });
+  status =
+      updates.first['status']?.toString() ??
+          'Onbekend';
+});
 }
     else {
   setState(() {
@@ -173,60 +183,136 @@ ElevatedButton(
   ),
 ),
 const SizedBox(height: 10),
+const SizedBox(height: 20),
 
-TextField(
-  controller: notitieController,
-  maxLines: 3,
-  decoration: const InputDecoration(
-    border: OutlineInputBorder(),
-    hintText:
-        'Voer een notitie toe...',
+const Text(
+  'Casusverloop',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
   ),
 ),
 
 const SizedBox(height: 10),
 
-ElevatedButton(
-  onPressed: _opslaanNotitie,
-  child: const Text(
-    'NOTITIE OPSLAAN',
+...afhandelingen.map(
+  (item) => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+        children: [
+          
+          const Text(
+  'Uitgevoerde actie',
+  style: TextStyle(
+    fontSize: 12,
+    color: Colors.grey,
   ),
 ),
-            const SizedBox(height: 30),
 
-            const Text(
-              'Tijdlijn',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+Text(
+  item['actie'] ?? '',
+  style: const TextStyle(
+    fontSize: 12,
+    color: const Color(0xFF234767),
+    fontWeight: FontWeight.w600,
+  ),
+),
 
-            const SizedBox(height: 10),
+const SizedBox(height: 10),
 
-            ...tijdlijn.map(
-              (item) => ListTile(
-                leading:
-                    const Icon(Icons.history),
-                title: Text(
-                  item['opmerking']
-                          ?.toString() ??
-                      '',
-                ),
-                subtitle: Text(
-                  item['created_at']
-                          ?.toString()
-                          .split('T')
-                          .first ??
-                      '',
-                ),
-                trailing: Text(
-                  item['status']
-                          ?.toString() ??
-                      '',
-                ),
-              ),
-            ),
+const Text(
+  'Notitie',
+  style: TextStyle(
+    fontSize: 12,
+    color: Colors.grey,
+  ),
+),
+
+Text(
+  item['notitie'] ?? '',
+  style: const TextStyle(
+    fontSize: 12,
+    color: const Color(0xFF234767),
+  ),
+),
+
+const SizedBox(height: 10),
+
+const Text(
+  'Vervolgactie',
+  style: TextStyle(
+    fontSize: 12,
+    color: Colors.grey,
+  ),
+),
+
+Text(
+  item['vervolgactie'] ?? '',
+  style: const TextStyle(
+    fontSize: 12,
+    color: const Color(0xFF234767),
+  ),
+),
+
+const SizedBox(height: 10),
+
+Text(
+  item['created_at']
+          ?.toString()
+          .split('T')
+          .first ??
+      '',
+  style: const TextStyle(
+    color: Colors.grey,
+    fontSize: 11,
+  ),
+),
+        ],
+      ),
+    ),
+  ),
+),
+
+const SizedBox(height: 20),
+const SizedBox(height: 30),
+
+const Text(
+  'Casusverloop',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+const SizedBox(height: 10),
+
+...tijdlijn.map(
+  (item) => Card(
+    child: ListTile(
+      leading: const Icon(
+        Icons.assignment_turned_in,
+      ),
+      title: Text(
+        item['opmerking']
+                ?.toString() ??
+            '',
+      ),
+      subtitle: Text(
+        item['created_at']
+                ?.toString()
+                .split('T')
+                .first ??
+            '',
+      ),
+    ),
+  ),
+),
+
+const SizedBox(height: 20),
+
           ],
         ),
       ),
