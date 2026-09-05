@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'casus_afhandeling_screen.dart';
 
 class IncidentDetailScreen extends StatefulWidget {
   final int incidentId;
@@ -155,38 +156,22 @@ Container(
 ),
 const SizedBox(height: 20),
 
-Wrap(
-  spacing: 10,
-  children: [
-   ElevatedButton(
-  onPressed: () async {
-    await _wijzigStatus('Open');
+ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            CasusAfhandelingScreen(
+          incidentId: widget.incidentId,
+        ),
+      ),
+    );
   },
-  child: const Text('Open'),
-),
-    ElevatedButton(
-  onPressed: () async {
-    await _wijzigStatus('In behandeling');
-  },
-  child: const Text('In behandeling'),
-),
-    ElevatedButton(
-  onPressed: () async {
-    await _wijzigStatus('Afgerond');
-  },
-  child: const Text('Afgerond'),
-),
-  ],
-),const SizedBox(height: 30),
-
-const Text(
-  'Notitie',
-  style: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
+  child: const Text(
+    'CASUS IN BEHANDELING NEMEN',
   ),
 ),
-
 const SizedBox(height: 10),
 
 TextField(
