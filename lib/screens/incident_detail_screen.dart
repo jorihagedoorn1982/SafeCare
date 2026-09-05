@@ -17,9 +17,14 @@ class IncidentDetailScreen extends StatefulWidget {
 
 class _IncidentDetailScreenState
     extends State<IncidentDetailScreen> {
+
   String status = 'Geen updates gevonden';
-List<dynamic> tijdlijn = [];
-List<dynamic> afhandelingen = [];
+
+  Map<String, dynamic>? incident;
+
+  List<dynamic> tijdlijn = [];
+  List<dynamic> afhandelingen = [];
+  List<dynamic> betrokkenen = [];
 
 final TextEditingController
     notitieController =
@@ -31,11 +36,12 @@ final TextEditingController
   }
 
   Future<void> _laadGegevens() async {
-    final updates = await Supabase.instance.client
+final updates = await Supabase.instance.client
         .from('incident_updates')
         .select()
         .eq('incident_id', widget.incidentId)
         .order('created_at');
+
 final afhandelingData =
     await Supabase.instance.client
         .from('casus_afhandeling')
@@ -45,10 +51,28 @@ final afhandelingData =
           widget.incidentId,
         )
         .order('created_at');
+
+final incidentData =
+    await Supabase.instance.client
+        .from('incidenten')
+        .select()
+        .eq('id', widget.incidentId)
+        .single(); 
+
+final betrokkenenData =
+    await Supabase.instance.client
+        .from('betrokkenen')
+        .select()
+        .eq(
+          'incident_id',
+          widget.incidentId,
+        );
     if (updates.isNotEmpty) {
   setState(() {
+  incident = incidentData;
   tijdlijn = updates;
   afhandelingen = afhandelingData;
+  betrokkenen = betrokkenenData;
 
   status =
       updates.first['status']?.toString() ??
@@ -130,7 +154,191 @@ Future<void> _opslaanNotitie() async {
             Text(
               'Incidentnummer: ${widget.incidentId}',
             ),
+            const SizedBox(height: 20),
 
+const Text(
+  'Incidentgegevens',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+const SizedBox(height: 15),
+
+const Text(
+  'Categorie',
+  style: TextStyle(
+    color: Colors.grey,
+    fontSize: 12,
+  ),
+),
+
+Text(
+  incident?['categorie'] ?? '',
+  style: const TextStyle(
+    color: Color(0xFF234767),
+    fontSize: 12,
+  ),
+),
+
+const SizedBox(height: 10),
+
+const Text(
+  'Subcategorie',
+  style: TextStyle(
+    color: Colors.grey,
+    fontSize: 12,
+  ),
+),
+
+Text(
+  incident?['subcategorie'] ?? '',
+  style: const TextStyle(
+    color: Color(0xFF234767),
+    fontSize: 12,
+  ),
+),
+
+const SizedBox(height: 10),
+
+const Text(
+  'Casustype',
+  style: TextStyle(
+    color: Colors.grey,
+    fontSize: 12,
+  ),
+),
+
+Text(
+  incident?['casustype'] ?? '',
+  style: const TextStyle(
+    color: Color(0xFF234767),
+    fontSize: 12,
+  ),
+),
+
+const SizedBox(height: 10),
+
+const Text(
+  'Locatie',
+  style: TextStyle(
+    color: Colors.grey,
+    fontSize: 12,
+  ),
+),
+
+Text(
+  incident?['locatie'] ?? '',
+  style: const TextStyle(
+    color: Color(0xFF234767),
+    fontSize: 12,
+  ),
+),
+
+const SizedBox(height: 10),
+
+const Text(
+  'Omschrijving',
+  style: TextStyle(
+    color: Colors.grey,
+    fontSize: 12,
+  ),
+),
+
+Text(
+  incident?['omschrijving'] ?? '',
+  style: const TextStyle(
+    color: Color(0xFF234767),
+    fontSize: 12,
+  ),
+),
+const SizedBox(height: 20),
+
+const Text(
+  'Betrokkenen',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+const SizedBox(height: 10),
+
+...betrokkenen.map(
+  (persoon) => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Naam',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+          Text(
+            persoon['naam'] ?? '',
+            style: const TextStyle(
+              color: Color(0xFF234767),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          const Text(
+            'Klas',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+          Text(
+            persoon['klas'] ?? '',
+            style: const TextStyle(
+              color: Color(0xFF234767),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          const Text(
+            'Onderwijsniveau',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+          Text(
+            persoon['onderwijsniveau'] ?? '',
+            style: const TextStyle(
+              color: Color(0xFF234767),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          const Text(
+            'Rol',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+          Text(
+            persoon['rol'] ?? '',
+            style: const TextStyle(
+              color: Color(0xFF234767),
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+),
             const SizedBox(height: 20),
 
             const Text(
@@ -182,7 +390,6 @@ ElevatedButton(
     'CASUS IN BEHANDELING NEMEN',
   ),
 ),
-const SizedBox(height: 10),
 const SizedBox(height: 20),
 
 const Text(
@@ -271,41 +478,6 @@ Text(
   ),
 ),
         ],
-      ),
-    ),
-  ),
-),
-
-const SizedBox(height: 20),
-const SizedBox(height: 30),
-
-const Text(
-  'Casusverloop',
-  style: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-  ),
-),
-
-const SizedBox(height: 10),
-
-...tijdlijn.map(
-  (item) => Card(
-    child: ListTile(
-      leading: const Icon(
-        Icons.assignment_turned_in,
-      ),
-      title: Text(
-        item['opmerking']
-                ?.toString() ??
-            '',
-      ),
-      subtitle: Text(
-        item['created_at']
-                ?.toString()
-                .split('T')
-                .first ??
-            '',
       ),
     ),
   ),
