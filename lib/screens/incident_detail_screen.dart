@@ -33,13 +33,14 @@ class _IncidentDetailScreenState
         .order('created_at');
 
     if (updates.isNotEmpty) {
-      setState(() {
-        tijdlijn = updates;
-        status =
-            updates.last['status']?.toString() ??
-                'Onbekend';
-      });
-    }
+  setState(() {
+    tijdlijn = updates;
+
+    status =
+        updates.first['status']?.toString() ??
+            'Onbekend';
+  });
+}
     else {
   setState(() {
     status = 'Geen updates gevonden';
@@ -98,14 +99,36 @@ Future<void> _wijzigStatus(
             const SizedBox(height: 20),
 
             const Text(
-              'Status',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+  'Status',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
 
-            Text(status),
+const SizedBox(height: 10),
+
+Container(
+  padding: const EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 8,
+  ),
+  decoration: BoxDecoration(
+    color: status == 'Afgerond'
+        ? Colors.green
+        : status == 'In behandeling'
+            ? Colors.orange
+            : Colors.red,
+    borderRadius: BorderRadius.circular(20),
+  ),
+  child: Text(
+    status,
+    style: const TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+),
 const SizedBox(height: 20),
 
 Wrap(
