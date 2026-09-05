@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'incident_detail_screen.dart';
 
 
 class DirecteurDashboardV2 extends StatefulWidget {
@@ -27,7 +28,7 @@ class _DirecteurDashboardV2State
 
   Future<void> _laadDashboard() async {
     const schoolId =
-        'c9d24fc9-156f-4d53-894f-d58287d5615d';
+        '75d629d5-07f4-4b93-a1dc-518d262c323c';
 
     final incidenten =
         await Supabase.instance.client
@@ -291,9 +292,19 @@ Card(
         return Column(
           children: [
             ListTile(
-              leading: const Icon(
-                Icons.warning_amber_rounded,
-              ),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => IncidentDetailScreen(
+          incidentId: incident['id'],
+        ),
+      ),
+    );
+  },
+  leading: const Icon(
+    Icons.warning_amber_rounded,
+  ),
               title: Text(
                 incident['categorie']?.toString() ??
                     'Onbekend',
