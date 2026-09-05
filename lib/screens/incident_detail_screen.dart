@@ -375,48 +375,61 @@ Container(
 ),
 const SizedBox(height: 20),
 
-ElevatedButton(
-  onPressed: () {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            CasusAfhandelingScreen(
-          incidentId: widget.incidentId,
+if (status != 'Afgerond')
+  ElevatedButton(
+    onPressed: () async {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              CasusAfhandelingScreen(
+            incidentId: widget.incidentId,
+          ),
         ),
-      ),
-    );
-  },
-  child: Text(
-  status == 'Afgerond'
-      ? 'RAPPORTAGE'
-      : status == 'In behandeling'
+      );
+
+      await _laadGegevens();
+    },
+    child: Text(
+      status == 'In behandeling'
           ? 'CASUS AANVULLEN'
           : 'CASUS IN BEHANDELING NEMEN',
-),
-),
+    ),
+  ),
 const SizedBox(height: 10),
 
-ElevatedButton(
-  onPressed: () {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            CasusAfrondenScreen(
-          incidentId: widget.incidentId,
+if (status != 'Afgerond')
+  ElevatedButton(
+    onPressed: () async {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              CasusAfrondenScreen(
+            incidentId: widget.incidentId,
+          ),
         ),
-      ),
-    );
-  },
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.green,
-  ),
-  child: const Text(
-    'CASUS AFRONDEN',
-  ),
-),
+      );
 
+      await _laadGegevens();
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.green,
+    ),
+    child: const Text(
+      'CASUS AFRONDEN',
+    ),
+  ),
+if (status == 'Afgerond')
+  
+  ElevatedButton(
+    onPressed: () {
+      // rapportage scherm
+    },
+    child: const Text(
+      'RAPPORTAGE',
+    ),
+  ),
 const SizedBox(height: 10),
 
 ...afhandelingen.map(

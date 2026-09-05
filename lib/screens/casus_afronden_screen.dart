@@ -96,6 +96,12 @@ class _CasusAfrondenScreenState
       'created_at':
           DateTime.now().toIso8601String(),
     });
+    await Supabase.instance.client
+    .from('incidenten')
+    .update({
+      'status': 'Afgerond',
+    })
+    .eq('id', widget.incidentId);
 
     print('AFRONDING OPGESLAGEN');
 
