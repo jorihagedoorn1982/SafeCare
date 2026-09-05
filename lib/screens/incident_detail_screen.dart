@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'casus_afhandeling_screen.dart';
+import 'casus_afronden_screen.dart';
 
 class IncidentDetailScreen extends StatefulWidget {
   final int incidentId;
@@ -23,8 +24,8 @@ class _IncidentDetailScreenState
   Map<String, dynamic>? incident;
 
   List<dynamic> tijdlijn = [];
-  List<dynamic> afhandelingen = [];
-  List<dynamic> betrokkenen = [];
+List<dynamic> afhandelingen = [];
+List<dynamic> betrokkenen = [];
 
 final TextEditingController
     notitieController =
@@ -75,8 +76,8 @@ final betrokkenenData =
   betrokkenen = betrokkenenData;
 
   status =
-      updates.first['status']?.toString() ??
-          'Onbekend';
+    updates.last['status']?.toString() ??
+        'Onbekend';
 });
 }
     else {
@@ -376,7 +377,7 @@ const SizedBox(height: 20),
 
 ElevatedButton(
   onPressed: () {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
@@ -386,17 +387,33 @@ ElevatedButton(
       ),
     );
   },
-  child: const Text(
-    'CASUS IN BEHANDELING NEMEN',
-  ),
+  child: Text(
+  status == 'Afgerond'
+      ? 'RAPPORTAGE'
+      : status == 'In behandeling'
+          ? 'CASUS AANVULLEN'
+          : 'CASUS IN BEHANDELING NEMEN',
 ),
-const SizedBox(height: 20),
+),
+const SizedBox(height: 10),
 
-const Text(
-  'Casusverloop',
-  style: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
+ElevatedButton(
+  onPressed: () {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            CasusAfrondenScreen(
+          incidentId: widget.incidentId,
+        ),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green,
+  ),
+  child: const Text(
+    'CASUS AFRONDEN',
   ),
 ),
 
