@@ -70,7 +70,35 @@ debugPrint(data.toString());
                   crossAxisAlignment:
                       CrossAxisAlignment.start,
                   children: [
+const SizedBox(height: 20),
 
+Card(
+  child: Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+
+        const Text(
+          'Betrokkenen',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        const SizedBox(height: 15),
+
+        ...betrokkenen.map(
+          (persoon) => Text(
+            '${persoon['naam']}',
+          ),
+        ),
+
+      ],
+    ),
+  ),
+),
                     Text(
                       'Incidentgegevens',
                       style: TextStyle(
