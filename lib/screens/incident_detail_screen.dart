@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'casus_afhandeling_screen.dart';
 import 'casus_afronden_screen.dart';
+import 'rapportage_screen.dart';
 
 class IncidentDetailScreen extends StatefulWidget {
   final int incidentId;
@@ -337,11 +338,19 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                 child: const Text('CASUS AFRONDEN'),
               ),
+           
             if (status == 'Afgerond')
               ElevatedButton(
                 onPressed: () {
-                  // rapportage scherm
-                },
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => RapportageScreen(
+        incidentId: widget.incidentId,
+      ),
+    ),
+  );
+},
                 child: const Text('RAPPORTAGE'),
               ),
             const SizedBox(height: 10),
