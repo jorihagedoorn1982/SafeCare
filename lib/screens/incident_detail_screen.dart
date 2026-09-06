@@ -76,7 +76,7 @@ final betrokkenenData =
   betrokkenen = betrokkenenData;
 
   status =
-    updates.last['status']?.toString() ??
+    incidentData['status']?.toString() ??
         'Onbekend';
 });
 }
@@ -352,24 +352,27 @@ const SizedBox(height: 10),
 
 const SizedBox(height: 10),
 
-Container(
-  padding: const EdgeInsets.symmetric(
-    horizontal: 16,
-    vertical: 8,
-  ),
-  decoration: BoxDecoration(
-    color: status == 'Afgerond'
-        ? Colors.green
-        : status == 'In behandeling'
-            ? Colors.orange
-            : Colors.red,
-    borderRadius: BorderRadius.circular(20),
-  ),
-  child: Text(
-    status,
-    style: const TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
+Align(
+  alignment: Alignment.centerLeft,
+  child: Container(
+    padding: const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 8,
+    ),
+    decoration: BoxDecoration(
+      color: status == 'Afgerond'
+          ? Colors.green
+          : status == 'In behandeling'
+              ? Colors.orange
+              : Colors.red,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Text(
+      status,
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
     ),
   ),
 ),

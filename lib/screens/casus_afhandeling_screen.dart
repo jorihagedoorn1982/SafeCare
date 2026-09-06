@@ -48,7 +48,14 @@ Future<void> _opslaanCasus() async {
   'created_at':
       DateTime.now().toIso8601String(),
 });
-
+await Supabase.instance.client
+    .from('incidenten')
+    .update({
+      'status': 'In behandeling',
+    })
+    .eq('id', widget.incidentId);
+    
+print('INCIDENT STATUS BIJGEWERKT');
     print('CASUS OPGESLAGEN');
 
     if (!mounted) return;
