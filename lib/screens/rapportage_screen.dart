@@ -144,18 +144,39 @@ const SizedBox(height: 10),
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
+          const Text(
+            'Naam',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Text(
             persoon['naam'] ?? '',
           ),
 
+          const SizedBox(height: 10),
+
+          const Text(
+            'Klas',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Text(
             persoon['klas'] ?? '',
           ),
 
+          const SizedBox(height: 10),
+
+          const Text(
+            'Onderwijsniveau',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Text(
             persoon['onderwijsniveau'] ?? '',
           ),
-          const SizedBox(height: 20),
 
         ],
       ),
