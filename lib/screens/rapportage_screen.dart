@@ -138,8 +138,10 @@ const SizedBox(height: 10),
 
 ...betrokkenen.map(
   (persoon) => Card(
-    child: Padding(
-      padding: const EdgeInsets.all(16),
+   
+    child: Container(
+  width: double.infinity,
+  padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -194,8 +196,10 @@ const SizedBox(height: 10),
 
 ...afhandelingen.map(
   (item) => Card(
-    child: Padding(
-      padding: const EdgeInsets.all(16),
+    child: Container(
+  width: double.infinity,
+  padding: const EdgeInsets.all(16),
+    
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
