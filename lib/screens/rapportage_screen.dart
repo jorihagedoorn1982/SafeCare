@@ -75,13 +75,6 @@ debugPrint(betrokkenenData.toString());
 
 const SizedBox(height: 20),
 
-Text(
-  'Betrokkenen (${betrokkenen.length})',
-  style: const TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-  ),
-),
                     Text(
                       'Incidentgegevens',
                       style: TextStyle(
@@ -119,6 +112,43 @@ const SizedBox(height: 10),
 
 Text(
   'Omschrijving: ${incident?['omschrijving'] ?? ''}',
+),
+const SizedBox(height: 20),
+
+const Text(
+  'Betrokkenen',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+const SizedBox(height: 10),
+
+...betrokkenen.map(
+  (persoon) => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Text(
+            persoon['naam'] ?? '',
+          ),
+
+          Text(
+            persoon['klas'] ?? '',
+          ),
+
+          Text(
+            persoon['onderwijsniveau'] ?? '',
+          ),
+
+        ],
+      ),
+    ),
+  ),
 ),
                   ],
                 ),
