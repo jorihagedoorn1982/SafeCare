@@ -169,6 +169,55 @@ Text(
     fontWeight: FontWeight.bold,
   ),
 ),
+const SizedBox(height: 10),
+
+...afhandelingen.map(
+  (item) => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Text(
+            'Uitgevoerde actie',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            item['actie'] ?? '',
+          ),
+
+          const SizedBox(height: 10),
+
+          Text(
+            'Notitie',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            item['notitie'] ?? '',
+          ),
+
+          const SizedBox(height: 10),
+
+          Text(
+            'Vervolgactie',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            item['vervolgactie'] ?? '',
+          ),
+
+        ],
+      ),
+    ),
+  ),
+),
                   ],
                 ),
               ),
