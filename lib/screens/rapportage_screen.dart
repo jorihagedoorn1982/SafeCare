@@ -218,6 +218,30 @@ const SizedBox(height: 10),
     ),
   ),
 ),
+const SizedBox(height: 20),
+
+const Text(
+  'Status',
+  style: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+const SizedBox(height: 10),
+
+Card(
+  child: Padding(
+    padding: EdgeInsets.all(16),
+    child: Text(
+      incident?['status'] ?? '',
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+),
                   ],
                 ),
               ),
