@@ -137,52 +137,47 @@ const Text(
 const SizedBox(height: 10),
 
 ...betrokkenen.map(
-  (persoon) => Card(
-   
-    child: Container(
-  width: double.infinity,
-  padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+  (persoon) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
 
-          const Text(
-            'Naam',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            persoon['naam'] ?? '',
-          ),
-
-          const SizedBox(height: 10),
-
-          const Text(
-            'Klas',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            persoon['klas'] ?? '',
-          ),
-
-          const SizedBox(height: 10),
-
-          const Text(
-            'Onderwijsniveau',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            persoon['onderwijsniveau'] ?? '',
-          ),
-
-        ],
+      const Text(
+        'Naam',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    ),
+      Text(
+        persoon['naam'] ?? '',
+      ),
+
+      const SizedBox(height: 10),
+
+      const Text(
+        'Klas',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      Text(
+        persoon['klas'] ?? '',
+      ),
+
+      const SizedBox(height: 10),
+
+      const Text(
+        'Onderwijsniveau',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      Text(
+        persoon['onderwijsniveau'] ?? '',
+      ),
+
+      const SizedBox(height: 20),
+
+    ],
   ),
 ),
 Text(
@@ -195,52 +190,47 @@ Text(
 const SizedBox(height: 10),
 
 ...afhandelingen.map(
-  (item) => Card(
-    child: Container(
-  width: double.infinity,
-  padding: const EdgeInsets.all(16),
-    
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+  (item) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
 
-          Text(
-            'Uitgevoerde actie',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            item['actie'] ?? '',
-          ),
-
-          const SizedBox(height: 10),
-
-          Text(
-            'Notitie',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            item['notitie'] ?? '',
-          ),
-
-          const SizedBox(height: 10),
-
-          Text(
-            'Vervolgactie',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            item['vervolgactie'] ?? '',
-          ),
-
-        ],
+      const Text(
+        'Uitgevoerde actie',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    ),
+      Text(
+        item['actie'] ?? '',
+      ),
+
+      const SizedBox(height: 10),
+
+      const Text(
+        'Notitie',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      Text(
+        item['notitie'] ?? '',
+      ),
+
+      const SizedBox(height: 10),
+
+      const Text(
+        'Vervolgactie',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      Text(
+        item['vervolgactie'] ?? '',
+      ),
+
+      const SizedBox(height: 20),
+
+    ],
   ),
 ),
 const SizedBox(height: 20),
@@ -255,15 +245,29 @@ const Text(
 
 const SizedBox(height: 10),
 
-Card(
-  child: Padding(
-    padding: EdgeInsets.all(16),
-    child: Text(
-      incident?['status'] ?? '',
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-      ),
+Text(
+  incident?['status'] ?? '',
+  style: const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  ),
+),
+const SizedBox(height: 20),
+
+SizedBox(
+  width: double.infinity,
+  child: ElevatedButton(
+    onPressed: () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'PDF-generatie komt hier',
+          ),
+        ),
+      );
+    },
+    child: const Text(
+      'PDF GENEREREN',
     ),
   ),
 ),
