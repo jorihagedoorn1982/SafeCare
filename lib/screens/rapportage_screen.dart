@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:printing/printing.dart';
+import 'pdf_service.dart';
 
 class RapportageScreen extends StatefulWidget {
   final int incidentId;
@@ -257,15 +259,16 @@ const SizedBox(height: 20),
 SizedBox(
   width: double.infinity,
   child: ElevatedButton(
-    onPressed: () {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'PDF-generatie komt hier',
-          ),
-        ),
-      );
-    },
+   onPressed: () async {
+  final pdf =
+      await PdfService.createPdf();
+
+ final bytes = await pdf.save();
+
+debugPrint(
+  'PDF aangemaakt: ${bytes.length} bytes',
+);
+},
     child: const Text(
       'PDF GENEREREN',
     ),
