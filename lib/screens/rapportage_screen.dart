@@ -157,17 +157,16 @@ const SizedBox(height: 10),
           ),
           const SizedBox(height: 20),
 
+        ],
+      ),
+    ),
+  ),
+),
 Text(
   'Afhandeling (${afhandelingen.length})',
   style: const TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
-  ),
-),
-
-        ],
-      ),
-    ),
   ),
 ),
                   ],
