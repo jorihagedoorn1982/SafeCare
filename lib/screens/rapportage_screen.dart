@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:printing/printing.dart';
 import 'pdf_service.dart';
+import '../widgets/safecare_appbar.dart';
 
 class RapportageScreen extends StatefulWidget {
   final int incidentId;
@@ -68,10 +69,9 @@ debugPrint(betrokkenenData.toString());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:
-            Text('Rapportage #${widget.incidentId}'),
-      ),
+      appBar: SafeCareAppBar(
+  titel: 'Rapportage #${widget.incidentId}',
+),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
@@ -256,12 +256,16 @@ Text(
 ),
 const SizedBox(height: 20),
 
-SizedBox(
-  width: double.infinity,
+Center(
   child: ElevatedButton(
    onPressed: () async {
   final pdf =
-      await PdfService.createPdf();
+    await PdfService.createPdf(
+      incident: incident!,
+      betrokkenen: betrokkenen,
+      afhandelingen: afhandelingen,
+    );
+
 
  final bytes = await pdf.save();
 

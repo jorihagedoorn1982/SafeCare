@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'casus_afhandeling_screen.dart';
 import 'casus_afronden_screen.dart';
 import 'rapportage_screen.dart';
+import '../widgets/safecare_appbar.dart';
 
 class IncidentDetailScreen extends StatefulWidget {
   final int incidentId;
@@ -105,7 +106,9 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Incident #${widget.incidentId}')),
+      appBar: SafeCareAppBar(
+  titel: 'Incident #${widget.incidentId}',
+),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
@@ -321,38 +324,24 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
                 ),
               ),
             const SizedBox(height: 10),
-
-            if (status != 'Afgerond')
-              ElevatedButton(
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          CasusAfrondenScreen(incidentId: widget.incidentId),
-                    ),
-                  );
-
-                  await _laadGegevens();
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: const Text('CASUS AFRONDEN'),
-              ),
            
-            if (status == 'Afgerond')
-              ElevatedButton(
-                onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => RapportageScreen(
-        incidentId: widget.incidentId,
-      ),
+           if (status == 'Afgerond')
+  Align(
+    alignment: Alignment.centerLeft,
+    child: ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RapportageScreen(
+              incidentId: widget.incidentId,
+            ),
+          ),
+        );
+      },
+      child: const Text('RAPPORTAGE'),
     ),
-  );
-},
-                child: const Text('RAPPORTAGE'),
-              ),
+  ),
             const SizedBox(height: 10),
 
             ...afhandelingen.map(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'incident_detail_screen.dart';
-
+import '../widgets/safecare_appbar.dart';
 
 class DirecteurDashboardV2 extends StatefulWidget {
   const DirecteurDashboardV2({super.key});
@@ -114,8 +114,8 @@ setState(() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-  title: const Text('Directeur Dashboard'),
+      appBar: SafeCareAppBar(
+  titel: 'Dashboard Directeur',
   actions: [
     IconButton(
       icon: const Icon(Icons.logout),
