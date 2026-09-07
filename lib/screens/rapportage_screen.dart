@@ -18,6 +18,7 @@ class _RapportageScreenState
     extends State<RapportageScreen> {
       Map<String, dynamic>? incident;
       List<dynamic> betrokkenen = [];
+      List<dynamic> afhandelingen = [];
 
 @override
 void initState() {
@@ -42,6 +43,15 @@ final betrokkenenData =
           widget.incidentId,
         );
 
+final afhandelingData =
+    await Supabase.instance.client
+        .from('casus_afhandeling')
+        .select()
+        .eq(
+          'incident_id',
+          widget.incidentId,
+        );
+
   debugPrint('RAPPORTAGE DATA:');
 debugPrint(data.toString());
 debugPrint('BETROKKENEN DATA:');
@@ -50,6 +60,7 @@ debugPrint(betrokkenenData.toString());
   setState(() {
   incident = data;
   betrokkenen = betrokkenenData;
+  afhandelingen = afhandelingData;
 });
 }
   @override
