@@ -44,10 +44,13 @@ final betrokkenenData =
 
   debugPrint('RAPPORTAGE DATA:');
 debugPrint(data.toString());
+debugPrint('BETROKKENEN DATA:');
+debugPrint(betrokkenenData.toString());
 
   setState(() {
-    incident = data;
-  });
+  incident = data;
+  betrokkenen = betrokkenenData;
+});
 }
   @override
   Widget build(BuildContext context) {
@@ -69,7 +72,7 @@ debugPrint(data.toString());
                   crossAxisAlignment:
                       CrossAxisAlignment.start,
                   children: [
-                    
+
 const SizedBox(height: 20),
 
 Text(
