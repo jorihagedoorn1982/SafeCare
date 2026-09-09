@@ -37,6 +37,7 @@ dependencies:
   fl_chart: ^1.0.0
   pdf: ^3.11.1
   printing: ^5.13.4
+  file_picker: ^10.3.2
 
 
 dev_dependencies:

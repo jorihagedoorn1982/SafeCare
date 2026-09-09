@@ -4,6 +4,7 @@ import 'casus_afhandeling_screen.dart';
 import 'casus_afronden_screen.dart';
 import 'rapportage_screen.dart';
 import '../widgets/safecare_appbar.dart';
+import 'package:file_picker/file_picker.dart';
 
 class IncidentDetailScreen extends StatefulWidget {
   final int incidentId;
@@ -56,7 +57,7 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
         .eq('incident_id', widget.incidentId);
        
     final bijlagenData = await Supabase.instance.client
-    .from('incident_bijlagen')
+    .from('incident-bijlage')
     .select()
     .eq('incident_id', widget.incidentId);
 
@@ -93,6 +94,20 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
       print('FOUT BIJ OPSLAAN: $e');
     }
   }
+  Future<void> _kiesBijlage() async {
+  debugPrint('KNOP BIJLAGE TOEVOEGEN GEKLIKT');
+
+  final result =
+      await FilePicker.platform.pickFiles();
+
+  if (result != null) {
+    final file = result.files.first;
+
+    debugPrint(
+      'Bestand gekozen: ${file.name}',
+    );
+  }
+}
 
   Future<void> _opslaanNotitie() async {
     if (notitieController.text.trim().isEmpty) {
@@ -232,14 +247,14 @@ Card(
         const SizedBox(height: 10),
 
         Align(
-          alignment: Alignment.centerLeft,
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text(
-              'BIJLAGE TOEVOEGEN',
-            ),
-          ),
-        ),
+  alignment: Alignment.centerLeft,
+  child: ElevatedButton(
+    onPressed: _kiesBijlage,
+    child: const Text(
+      'BIJLAGE TOEVOEGEN',
+    ),
+  ),
+),
 
         const SizedBox(height: 10),
 
@@ -325,12 +340,7 @@ const SizedBox(height: 10),
               ),
             ),
             const SizedBox(height: 20),
-Card(
-  child: Padding(
-    padding: const EdgeInsets.all(16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+
             const Text(
               'Status',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -374,7 +384,7 @@ Card(
                           CasusAfhandelingScreen(incidentId: widget.incidentId),
                     ),
                   );
-
+                  
                   await _laadGegevens();
                 },
                 child: Text(
