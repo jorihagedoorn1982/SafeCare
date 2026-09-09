@@ -22,6 +22,7 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
   List<dynamic> tijdlijn = [];
   List<dynamic> afhandelingen = [];
   List<dynamic> betrokkenen = [];
+  List<dynamic> bijlagen = [];
 
   final TextEditingController notitieController = TextEditingController();
   @override
@@ -53,12 +54,19 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
         .from('betrokkenen')
         .select()
         .eq('incident_id', widget.incidentId);
+       
+    final bijlagenData = await Supabase.instance.client
+    .from('incident_bijlagen')
+    .select()
+    .eq('incident_id', widget.incidentId);
+
     if (updates.isNotEmpty) {
       setState(() {
         incident = incidentData;
         tijdlijn = updates;
         afhandelingen = afhandelingData;
         betrokkenen = betrokkenenData;
+        bijlagen = bijlagenData;
 
         status = incidentData['status']?.toString() ?? 'Onbekend';
       });
@@ -206,27 +214,74 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
                 ),
               ),
             ),
+Card(
+  child: Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
 
-            const SizedBox(height: 20),
+        const Text(
+          'Bijlagen',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
 
-            const Text(
-              'Betrokkenen',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        const SizedBox(height: 10),
+
+        Align(
+          alignment: Alignment.centerLeft,
+          child: ElevatedButton(
+            onPressed: () {},
+            child: const Text(
+              'BIJLAGE TOEVOEGEN',
             ),
+          ),
+        ),
 
-            const SizedBox(height: 10),
+        const SizedBox(height: 10),
 
+        bijlagen.isEmpty
+            ? const Text(
+                'Nog geen bijlagen',
+              )
+            : Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: bijlagen
+                    .map<Widget>(
+                      (bestand) => Text(
+                        '📎 ${bestand['bestandsnaam']}',
+                      ),
+                    )
+                    .toList(),
+              ),
+
+      ],
+    ),
+  ),
+),
+const SizedBox(height: 10),
+          
             ...betrokkenen.map<Widget>(
-              (persoon) => Card(
+              (persoon) => 
+              Card(
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
+              'Betrokkenen',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+                      const Text(
                         'Naam',
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
+                      
                       Text(
                         persoon['naam'] ?? '',
                         style: const TextStyle(color: Color(0xFF234767)),
@@ -270,7 +325,12 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
               ),
             ),
             const SizedBox(height: 20),
-
+Card(
+  child: Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
             const Text(
               'Status',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
