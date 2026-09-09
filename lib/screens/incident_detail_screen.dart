@@ -95,18 +95,37 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
     }
   }
   Future<void> _kiesBijlage() async {
-  debugPrint('KNOP BIJLAGE TOEVOEGEN GEKLIKT');
+  debugPrint('KNOP GEKLIKT');
 
   final result =
       await FilePicker.platform.pickFiles();
 
-  if (result != null) {
-    final file = result.files.first;
+  debugPrint('FILE PICKER GESLOTEN');
 
-    debugPrint(
-      'Bestand gekozen: ${file.name}',
-    );
+  if (result == null) {
+    debugPrint('GEEN BESTAND GEKOZEN');
+    return;
   }
+
+  debugPrint('BESTAND GEKOZEN');
+
+  final file = result.files.first;
+
+  debugPrint(
+    'BESTANDSNAAM: ${file.name}',
+  );
+
+  setState(() {
+    bijlagen.add({
+      'bestandsnaam': file.name,
+    });
+  });
+  debugPrint(
+  'Aantal bijlagen: ${bijlagen.length}',
+);
+debugPrint(
+  bijlagen.toString(),
+);
 }
 
   Future<void> _opslaanNotitie() async {
