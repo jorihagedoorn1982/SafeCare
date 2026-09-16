@@ -36,6 +36,37 @@ class SupabaseService {
 
   return result['id'];
 }
+Future<String> getOfMaakLeerling({
+  required String schoolId,
+  required String leerlingnummer,
+  required String klas,
+  required String onderwijsniveau,
+}) async {
+
+  final bestaand = await supabase
+      .from('leerlingen')
+      .select()
+      .eq('school_id', schoolId)
+      .eq('leerlingnummer', leerlingnummer)
+      .maybeSingle();
+
+  if (bestaand != null) {
+    return bestaand['id'].toString();
+  }
+
+  final nieuw = await supabase
+      .from('leerlingen')
+      .insert({
+        'school_id': schoolId,
+        'leerlingnummer': leerlingnummer,
+        'klas': klas,
+        'onderwijsniveau': onderwijsniveau,
+      })
+      .select()
+      .single();
+
+  return nieuw['id'].toString();
+}
 
   Future<void> saveBetrokkene({
   required int incidentId,
