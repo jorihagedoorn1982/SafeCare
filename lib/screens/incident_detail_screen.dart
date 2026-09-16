@@ -57,11 +57,10 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
         .select()
         .eq('incident_id', widget.incidentId);
        
-    final response = await Supabase.instance.client
+    final bijlagenData = await Supabase.instance.client
     .from('incident-bijlage')
-    .select();
-
-final bijlagenData = response;
+    .select()
+    .eq('incident_id', widget.incidentId);
     
     if (updates.isNotEmpty) {
       setState(() {
@@ -141,6 +140,7 @@ try {
   await _laadGegevens();
 
 } catch (e) {
+  debugPrint('Upload fout: $e');
 }}
 
   Future<void> _opslaanNotitie() async {
@@ -291,9 +291,7 @@ Card(
 ),
 
         const SizedBox(height: 10),
-Text(
-  'Aantal bijlagen: ${bijlagen.length}',
-),
+        
         bijlagen.isEmpty
             ? const Text(
                 'Nog geen bijlagen',
