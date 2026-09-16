@@ -17,6 +17,7 @@ class VeiligheidsCoordinatorDashboardScreen
 class _VeiligheidsCoordinatorDashboardScreenState
     extends State<VeiligheidsCoordinatorDashboardScreen> {
       int openDossiers = 0;
+      String hotspot = '-';
       @override
 void initState() {
   super.initState();
@@ -30,6 +31,21 @@ Future<void> laadDashboard() async {
         'status',
         ['Open', 'In behandeling'],
       );
+      final locaties =
+    await Supabase.instance.client
+        .from('incidenten')
+        .select('locatie');
+        final tellingen = <String, int>{};
+
+for (final item in locaties) {
+  final locatie =
+      item['locatie']?.toString() ?? '';
+
+  if (locatie.isEmpty) continue;
+
+  tellingen[locatie] =
+      (tellingen[locatie] ?? 0) + 1;
+}
 
   setState(() {
     openDossiers = open.length;
