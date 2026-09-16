@@ -5,6 +5,7 @@ import 'dashboard_home_screen.dart';
 import 'directeur_dashboard_screen.dart';
 import 'login_screen.dart';
 import 'directeur_dashboard_v2.dart';
+import 'veiligheidscoordinator_dashboard_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -56,7 +57,11 @@ print('ROL IN DASHBOARDSCREEN: $rol');
   return const DirecteurDashboardV2();
 }
 
-        return const DashboardHomeScreen();
+if (rol == 'Veiligheidsmedewerker') {
+  return const VeiligheidsCoordinatorDashboardScreen();
+}
+
+return const DashboardHomeScreen();
       },
     );
   }

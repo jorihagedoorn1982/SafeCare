@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dashboard_screen.dart';
 import 'login_screen.dart';
 import 'directeur_dashboard_screen.dart';
+import 'veiligheidscoordinator_dashboard_screen.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -47,6 +48,9 @@ class AuthGate extends StatelessWidget {
 
         final rol = snapshot.data;
 
+        print('ROL GEVONDEN: $rol');
+print('USER ID: ${user.id}');
+
         if (rol == 'directeur') {
   return const Scaffold(
     body: Center(
@@ -58,6 +62,9 @@ class AuthGate extends StatelessWidget {
       ),
     ),
   );
+}
+if (rol == 'Veiligheidsmedewerker') {
+  return const VeiligheidsCoordinatorDashboardScreen();
 }
 
         return DashboardScreen();

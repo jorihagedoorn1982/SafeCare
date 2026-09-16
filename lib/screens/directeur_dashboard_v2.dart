@@ -140,15 +140,33 @@ setState(() {
             crossAxisAlignment:
                 CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Directeur Dashboard',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              const Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      'Directeur Test',
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    Text(
+      'directeur',
+      style: TextStyle(
+        fontSize: 14,
+        color: Colors.grey,
+      ),
+    ),
+    Text(
+      'directeur2@test.nl',
+      style: TextStyle(
+        fontSize: 14,
+      ),
+    ),
+  ],
+),
 
-              const SizedBox(height: 30),
+const SizedBox(height: 20),
 
               GridView.count(
                 shrinkWrap: true,
