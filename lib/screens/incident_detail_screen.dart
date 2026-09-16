@@ -5,6 +5,7 @@ import 'casus_afronden_screen.dart';
 import 'rapportage_screen.dart';
 import '../widgets/safecare_appbar.dart';
 import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 
 class IncidentDetailScreen extends StatefulWidget {
   final int incidentId;
@@ -56,11 +57,12 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
         .select()
         .eq('incident_id', widget.incidentId);
        
-    final bijlagenData = await Supabase.instance.client
+    final response = await Supabase.instance.client
     .from('incident-bijlage')
-    .select()
-    .eq('incident_id', widget.incidentId);
+    .select();
 
+final bijlagenData = response;
+    
     if (updates.isNotEmpty) {
       setState(() {
         incident = incidentData;
@@ -95,38 +97,51 @@ class _IncidentDetailScreenState extends State<IncidentDetailScreen> {
     }
   }
   Future<void> _kiesBijlage() async {
-  debugPrint('KNOP GEKLIKT');
 
   final result =
       await FilePicker.platform.pickFiles();
 
-  debugPrint('FILE PICKER GESLOTEN');
-
   if (result == null) {
-    debugPrint('GEEN BESTAND GEKOZEN');
+    
     return;
   }
 
-  debugPrint('BESTAND GEKOZEN');
-
   final file = result.files.first;
+  final bestand = File(file.path!);
 
-  debugPrint(
-    'BESTANDSNAAM: ${file.name}',
-  );
 
-  setState(() {
-    bijlagen.add({
-      'bestandsnaam': file.name,
-    });
-  });
-  debugPrint(
-  'Aantal bijlagen: ${bijlagen.length}',
-);
-debugPrint(
-  bijlagen.toString(),
-);
-}
+ final opslagPad =
+    '${widget.incidentId}/${file.name}';
+
+try {
+  await Supabase.instance.client.storage
+    .from('incident-bijlage')
+    .upload(
+      opslagPad,
+      bestand,
+      fileOptions: const FileOptions(
+        upsert: true,
+      ),
+    );
+
+  final publicUrl =
+      Supabase.instance.client.storage
+          .from('incident-bijlage')
+          .getPublicUrl(opslagPad);
+
+  await Supabase.instance.client
+      .from('incident-bijlage')
+      .insert({
+        'incident_id': widget.incidentId,
+        'bestandsnaam': file.name,
+        'bestand_url': publicUrl,
+        'bestand_type': file.extension,
+      });
+
+  await _laadGegevens();
+
+} catch (e) {
+}}
 
   Future<void> _opslaanNotitie() async {
     if (notitieController.text.trim().isEmpty) {
@@ -276,7 +291,9 @@ Card(
 ),
 
         const SizedBox(height: 10),
-
+Text(
+  'Aantal bijlagen: ${bijlagen.length}',
+),
         bijlagen.isEmpty
             ? const Text(
                 'Nog geen bijlagen',
