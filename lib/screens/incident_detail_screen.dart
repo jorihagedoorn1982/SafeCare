@@ -6,6 +6,7 @@ import 'rapportage_screen.dart';
 import '../widgets/safecare_appbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:url_launcher/url_launcher.dart';
 
 class IncidentDetailScreen extends StatefulWidget {
   final int incidentId;
@@ -141,7 +142,8 @@ try {
 
 } catch (e) {
   debugPrint('Upload fout: $e');
-}}
+}
+}
 
   Future<void> _opslaanNotitie() async {
     if (notitieController.text.trim().isEmpty) {
@@ -301,9 +303,51 @@ Card(
                     CrossAxisAlignment.start,
                 children: bijlagen
                     .map<Widget>(
-                      (bestand) => Text(
-                        '📎 ${bestand['bestandsnaam']}',
-                      ),
+                      (bestand) => Row(
+  children: [
+    Expanded(
+      child: InkWell(
+        onTap: () async {
+          final url = Uri.parse(
+            bestand['bestand_url'],
+          );
+
+          await launchUrl(
+            url,
+            mode: LaunchMode.externalApplication,
+          );
+        },
+        child: Text(
+          '📎 ${bestand['bestandsnaam']}',
+          style: const TextStyle(
+            color: Colors.blue,
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      ),
+    ),
+    IconButton(
+      icon: const Icon(
+        Icons.delete,
+        color: Colors.red,
+      ),
+      onPressed: () async {
+        await Supabase.instance.client.storage
+            .from('incident-bijlage')
+            .remove([
+          '${widget.incidentId}/${bestand['bestandsnaam']}',
+        ]);
+
+        await Supabase.instance.client
+            .from('incident-bijlage')
+            .delete()
+            .eq('id', bestand['id']);
+
+        await _laadGegevens();
+      },
+    ),
+  ],
+),
                     )
                     .toList(),
               ),
